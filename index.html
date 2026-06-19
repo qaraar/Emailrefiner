@@ -10,45 +10,49 @@
     <div class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow-lg">
         <h1 class="text-2xl font-bold mb-4">Email Refiner</h1>
         
-        <input type="password" id="api_key_input" class="w-full p-2 border rounded-lg mb-4" placeholder="Enter API Key here">
+        <div class="grid grid-cols-2 gap-2 mb-4">
+            <button onclick="setTone('Professional')" class="border p-2 rounded-lg hover:bg-blue-100">Professional</button>
+            <button onclick="setTone('Friendly')" class="border p-2 rounded-lg hover:bg-blue-100">Friendly</button>
+            <button onclick="setTone('Formal')" class="border p-2 rounded-lg hover:bg-blue-100">Formal</button>
+            <button onclick="setTone('Concise')" class="border p-2 rounded-lg hover:bg-blue-100">Concise</button>
+        </div>
+
+        <textarea id="input" class="w-full h-32 p-3 border rounded-lg mb-4" placeholder="Type your rough email..."></textarea>
+        <button onclick="refineEmail()" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold">Refine My Email</button>
         
-        <textarea id="input" class="w-full h-32 p-3 border rounded-lg mb-4" placeholder="Paste your rough email..."></textarea>
-        <button onclick="refineEmail()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold">Refine</button>
-        <div id="output" class="mt-4 p-3 bg-slate-100 rounded-lg min-h-[50px]"></div>
+        <div id="outputContainer" class="hidden mt-4">
+            <div id="output" class="p-3 bg-slate-100 rounded-lg whitespace-pre-line mb-2"></div>
+            <button onclick="copyToClipboard()" class="w-full bg-slate-800 text-white py-2 rounded-lg">Copy Email</button>
+        </div>
     </div>
 
     <script>
-        async function refineEmail() {
-            const API_KEY = document.getElementById('api_key_input').value;
+        let selectedTone = "Professional";
+
+        function setTone(tone) {
+            selectedTone = tone;
+            alert("Tone set to: " + tone);
+        }
+
+        function refineEmail() {
             const text = document.getElementById('input').value;
-            const output = document.getElementById('output');
+            if(!text) return alert("Please type something!");
 
-            if (!API_KEY) {
-                alert("Please enter your API Key!");
-                return;
-            }
+            let refined = "";
+            // یہ ایک سادہ طریقہ ہے، کوئی AI کال نہیں ہو رہی
+            if(selectedTone === "Professional") refined = "Dear Team,\n\nI am writing to inform you that " + text + ".\n\nBest regards,\n[Your Name]";
+            else if(selectedTone === "Friendly") refined = "Hi there!\n\nJust wanted to let you know that " + text + ".\n\nCheers,\n[Your Name]";
+            else if(selectedTone === "Formal") refined = "To Whom It May Concern,\n\nThis is to formally state that " + text + ".\n\nSincerely,\n[Your Name]";
+            else refined = "Hello,\n\nJust updating you: " + text + ".\n\nThanks,\n[Your Name]";
 
-            output.innerText = "Processing...";
-            try {
-                // گوگل جیمنی API کا یو آر ایل
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        contents: [{ parts: [{ text: "Rewrite this email professionally: " + text }] }] 
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.candidates && data.candidates[0].content.parts[0].text) {
-                    output.innerText = data.candidates[0].content.parts[0].text;
-                } else {
-                    output.innerText = "Error: Check your API Key.";
-                }
-            } catch (e) {
-                output.innerText = "Error: Connection failed.";
-            }
+            document.getElementById('output').innerText = refined;
+            document.getElementById('outputContainer').classList.remove('hidden');
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('output').innerText;
+            navigator.clipboard.writeText(text);
+            alert("Copied!");
         }
     </script>
 </body>
