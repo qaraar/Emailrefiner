@@ -8,15 +8,15 @@
     <style>
         .green-bg { background-color: #166534; }
         .text-green { color: #166534; }
+        .border-green { border-color: #166534; }
         .tone-btn { border: 2px solid #166534; color: #166534; transition: all 0.3s; }
         .active-btn { background-color: #166534 !important; color: white !important; }
     </style>
 </head>
 <body class="bg-slate-50 p-6">
-    <div class="max-w-md mx-auto">
-        <!-- زبان منتخب کرنے والا ڈراپ ڈاؤن -->
-        <div class="mb-4">
-            <select id="langSelector" onchange="updateLanguage()" class="w-full p-2 border border-green-700 rounded-lg">
+    <div class="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow-lg">
+        <div class="mb-6">
+            <select id="langSelector" onchange="updateLanguage()" class="w-full p-3 border border-green-700 rounded-lg outline-none">
                 <option value="en">English</option>
                 <option value="ur">اردو</option>
                 <option value="de">Deutsch</option>
@@ -25,14 +25,12 @@
             </select>
         </div>
 
-        <!-- ہیڈر -->
         <div class="mb-8">
-            <p id="sub-header" class="text-sm font-medium text-gray-600">Supports Multiple Languages [5]</p>
+            <p id="sub-header" class="text-sm font-medium text-gray-500">Supports Multiple Languages [5]</p>
             <h1 id="main-title" class="text-3xl font-bold text-green">Into Global Professional Emails</h1>
-            <p id="desc" class="text-gray-700 mt-2">Our smart multi-language system instantly transforms your draft into professional emails across different languages.</p>
+            <p id="desc" class="text-gray-700 mt-2">Our smart multi-language system instantly transforms your draft into professional emails.</p>
         </div>
 
-        <!-- ٹون سلیکشن -->
         <div class="grid grid-cols-2 gap-3 mb-6">
             <button onclick="selectTone(this, 'Professional')" class="tone-btn active-btn p-3 rounded-xl font-semibold">Professional</button>
             <button onclick="selectTone(this, 'Friendly')" class="tone-btn p-3 rounded-xl font-semibold">Friendly</button>
@@ -40,34 +38,20 @@
             <button onclick="selectTone(this, 'Concise')" class="tone-btn p-3 rounded-xl font-semibold">Concise</button>
         </div>
 
-        <textarea id="input" class="w-full h-32 p-4 border border-slate-300 rounded-xl mb-6 outline-none" placeholder="Write your draft here..."></textarea>
+        <textarea id="input" class="w-full h-64 p-4 border border-slate-300 rounded-xl mb-6 outline-none focus:ring-2 focus:ring-green-600" placeholder="Write your draft here..."></textarea>
         
-        <button id="refine-btn" onclick="refineEmail()" class="w-full green-bg text-white py-4 rounded-xl font-bold text-lg">Refine My Email</button>
+        <button id="refine-btn" onclick="refineEmail()" class="w-full green-bg text-white py-4 rounded-xl font-bold text-lg hover:bg-green-900 transition">Refine My Email</button>
+
+        <div id="outputContainer" class="hidden mt-8">
+            <h2 class="text-lg font-bold text-green mb-2">Refined Email:</h2>
+            <div id="output" class="w-full h-64 p-5 bg-green-50 text-gray-800 rounded-xl border border-green-200 whitespace-pre-line overflow-y-auto mb-4"></div>
+        </div>
     </div>
 
     <script>
         const content = {
-            en: { title: "Into Global Professional Emails", desc: "Our smart multi-language system instantly transforms your draft into professional emails across different languages", btn: "Refine My Email" },
-            ur: { title: "گلوبل پروفیشنل ای میلز", desc: "ہمارا سمارٹ ملٹی لینگویج سسٹم آپ کے مسودے کو فوری طور پر مختلف زبانوں میں پروفیشنل ای میلز میں تبدیل کرتا ہے", btn: "ای میل درست کریں" },
-            de: { title: "Globale professionelle E-Mails", desc: "Unser intelligentes System transformiert Ihren Entwurf sofort in professionelle E-Mails.", btn: "E-Mail verfeinern" },
-            fr: { title: "E-mails professionnels mondiaux", desc: "Notre système intelligent transforme instantanément votre brouillon en e-mails professionnels.", btn: "Affiner mon e-mail" },
-            es: { title: "Correos electrónicos profesionales", desc: "Nuestro sistema inteligente transforma al instante su borrador en correos profesionales.", btn: "Refinar mi correo" }
-        };
-
-        function updateLanguage() {
-            const lang = document.getElementById('langSelector').value;
-            document.getElementById('main-title').innerText = content[lang].title;
-            document.getElementById('desc').innerText = content[lang].desc;
-            document.getElementById('refine-btn').innerText = content[lang].btn;
-            document.body.dir = (lang === 'ur') ? 'rtl' : 'ltr';
-        }
-
-        function selectTone(btn, tone) {
-            document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active-btn'));
-            btn.classList.add('active-btn');
-        }
-        
-        function refineEmail() { alert("Refining email..."); }
-    </script>
-</body>
-</html>
+            en: { title: "Into Global Professional Emails", desc: "Our smart multi-language system instantly transforms your draft into professional emails.", btn: "Refine My Email" },
+            ur: { title: "گلوبل پروفیشنل ای میلز", desc: "ہمارا سمارٹ ملٹی لینگویج سسٹم آپ کے مسودے کو فوری طور پر پروفیشنل ای میلز میں تبدیل کرتا ہے۔", btn: "ای میل درست کریں" },
+            de: { title: "Globale professionelle E-Mails", desc: "Unser System transformiert Ihren Entwurf sofort in professionelle E-Mails.", btn: "E-Mail verfeinern" },
+            fr: { title: "E-mails professionnels mondiaux", desc: "Notre système transforme instantanément votre brouillon en e-mails professionnels.", btn: "Affiner mon e-mail" },
+            es: { title: "Correos electrónicos profesionales", desc: "Nuestro sistema transforma al instante su borrador en correos profesionales.", btn: "
