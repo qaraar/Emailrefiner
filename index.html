@@ -5,54 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Refiner</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .active-btn { background-color: #059669 !important; color: white; }
+    </style>
 </head>
 <body class="bg-slate-50 p-6">
-    <div class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow-lg">
-        <h1 class="text-2xl font-bold mb-4">Email Refiner</h1>
-        
-        <div class="grid grid-cols-2 gap-2 mb-4">
-            <button onclick="setTone('Professional')" class="border p-2 rounded-lg hover:bg-blue-100">Professional</button>
-            <button onclick="setTone('Friendly')" class="border p-2 rounded-lg hover:bg-blue-100">Friendly</button>
-            <button onclick="setTone('Formal')" class="border p-2 rounded-lg hover:bg-blue-100">Formal</button>
-            <button onclick="setTone('Concise')" class="border p-2 rounded-lg hover:bg-blue-100">Concise</button>
+    <div class="max-w-md mx-auto bg-white p-8 rounded-3xl shadow-xl">
+        <h1 class="text-3xl font-black text-slate-800 mb-2">Into Professional Emails</h1>
+        <p class="text-slate-500 mb-6">Write your rough email and let it transform instantly.</p>
+
+        <!-- Choose Tone -->
+        <h2 class="font-bold mb-3 text-slate-700">Choose Tone</h2>
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <button onclick="selectTone(this, 'Professional')" class="tone-btn border-2 p-3 rounded-2xl hover:border-green-600 transition">Professional</button>
+            <button onclick="selectTone(this, 'Friendly')" class="tone-btn border-2 p-3 rounded-2xl hover:border-green-600 transition">Friendly</button>
+            <button onclick="selectTone(this, 'Formal')" class="tone-btn border-2 p-3 rounded-2xl hover:border-green-600 transition">Formal</button>
+            <button onclick="selectTone(this, 'Concise')" class="tone-btn border-2 p-3 rounded-2xl hover:border-green-600 transition">Concise</button>
         </div>
 
-        <textarea id="input" class="w-full h-32 p-3 border rounded-lg mb-4" placeholder="Type your rough email..."></textarea>
-        <button onclick="refineEmail()" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold">Refine My Email</button>
+        <textarea id="input" class="w-full h-40 p-4 border-2 border-slate-200 rounded-2xl mb-6 focus:border-green-600 outline-none" placeholder="Write your rough email here..."></textarea>
         
-        <div id="outputContainer" class="hidden mt-4">
-            <div id="output" class="p-3 bg-slate-100 rounded-lg whitespace-pre-line mb-2"></div>
-            <button onclick="copyToClipboard()" class="w-full bg-slate-800 text-white py-2 rounded-lg">Copy Email</button>
+        <button onclick="refineEmail()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-green-700 transition">Refine My Email</button>
+
+        <!-- Output -->
+        <div id="outputContainer" class="hidden mt-8">
+            <h2 class="font-bold mb-2">Refined Email:</h2>
+            <div id="output" class="p-4 bg-slate-100 rounded-2xl whitespace-pre-line mb-3 border border-slate-200 text-slate-700"></div>
+            <button onclick="copyToClipboard()" class="w-full bg-slate-800 text-white py-3 rounded-2xl font-semibold hover:bg-slate-900">Copy to Clipboard</button>
         </div>
     </div>
 
     <script>
-        let selectedTone = "Professional";
+        let currentTone = "Professional";
 
-        function setTone(tone) {
-            selectedTone = tone;
-            alert("Tone set to: " + tone);
+        function selectTone(btn, tone) {
+            document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active-btn'));
+            btn.classList.add('active-btn');
+            currentTone = tone;
         }
 
         function refineEmail() {
             const text = document.getElementById('input').value;
-            if(!text) return alert("Please type something!");
+            if(!text) return alert("Please write something first!");
 
-            let refined = "";
-            // یہ ایک سادہ طریقہ ہے، کوئی AI کال نہیں ہو رہی
-            if(selectedTone === "Professional") refined = "Dear Team,\n\nI am writing to inform you that " + text + ".\n\nBest regards,\n[Your Name]";
-            else if(selectedTone === "Friendly") refined = "Hi there!\n\nJust wanted to let you know that " + text + ".\n\nCheers,\n[Your Name]";
-            else if(selectedTone === "Formal") refined = "To Whom It May Concern,\n\nThis is to formally state that " + text + ".\n\nSincerely,\n[Your Name]";
-            else refined = "Hello,\n\nJust updating you: " + text + ".\n\nThanks,\n[Your Name]";
+            const templates = {
+                "Professional": `Dear Team,\n\nI am writing to address the following: ${text}.\n\nI appreciate your prompt attention to this matter.\n\nBest regards,\n[Your Name]`,
+                "Friendly": `Hi everyone,\n\nI wanted to share a quick update regarding: ${text}.\n\nLooking forward to hearing your thoughts!\n\nBest,\n[Your Name]`,
+                "Formal": `To Whom It May Concern,\n\nThis communication serves to formally inform you that: ${text}.\n\nThank you for your cooperation.\n\nSincerely,\n[Your Name]`,
+                "Concise": `Hi,\n\nRegarding: ${text}.\n\nPlease let me know if you need anything else.\n\nThanks,\n[Your Name]`
+            };
 
-            document.getElementById('output').innerText = refined;
+            document.getElementById('output').innerText = templates[currentTone];
             document.getElementById('outputContainer').classList.remove('hidden');
         }
 
         function copyToClipboard() {
-            const text = document.getElementById('output').innerText;
-            navigator.clipboard.writeText(text);
-            alert("Copied!");
+            navigator.clipboard.writeText(document.getElementById('output').innerText);
+            alert("Copied to clipboard!");
         }
     </script>
 </body>
