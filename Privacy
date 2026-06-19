@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Privacy Policy</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-slate-50 p-8">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-sm">
+        <h1 class="text-2xl font-bold mb-4 text-green-700">Privacy Policy</h1>
+        <p class="text-slate-600">Your privacy is important to us. We do not store your personal email content. This website uses Google AdSense to display advertisements, which may use cookies to serve ads based on your visit to this site.</p>
+        <a href="index.html" class="text-green-600 font-bold mt-4 block underline">Back to Home</a>
+    </div>
+</body>
+</html>
