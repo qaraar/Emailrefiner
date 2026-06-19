@@ -2,66 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>EmailRefiner.site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Email Refiner</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* HBL Blue Color Scheme */
-        .hbl-blue { background-color: #004a99; }
-        .hbl-light { background-color: #eef6ff; }
-        .tone-btn { background: white; border: 1px solid #004a99; color: #004a99; transition: all 0.3s; }
-        .tone-btn:hover { background: #004a99; color: white; }
-        .active-btn { background-color: #004a99 !important; color: white !important; }
+        .green-bg { background-color: #166534; }
+        .text-green { color: #166534; }
+        .tone-btn { border: 2px solid #166534; color: #166534; transition: all 0.3s; }
+        .active-btn { background-color: #166534 !important; color: white !important; }
     </style>
 </head>
-<body class="bg-slate-100 p-6">
-    <div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-        
-        <div class="text-center mb-8">
-            <div class="w-16 h-16 hbl-blue rounded-xl mx-auto flex items-center justify-center text-white text-3xl font-bold mb-4 shadow-md">ER</div>
-            <h1 class="text-2xl font-bold text-[#004a99]">EmailRefiner.site</h1>
+<body class="bg-slate-50 p-6">
+    <div class="max-w-md mx-auto">
+        <!-- زبان منتخب کرنے والا ڈراپ ڈاؤن -->
+        <div class="mb-4">
+            <select id="langSelector" onchange="updateLanguage()" class="w-full p-2 border border-green-700 rounded-lg">
+                <option value="en">English</option>
+                <option value="ur">اردو</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Français</option>
+                <option value="es">Español</option>
+            </select>
         </div>
 
+        <!-- ہیڈر -->
+        <div class="mb-8">
+            <p id="sub-header" class="text-sm font-medium text-gray-600">Supports Multiple Languages [5]</p>
+            <h1 id="main-title" class="text-3xl font-bold text-green">Into Global Professional Emails</h1>
+            <p id="desc" class="text-gray-700 mt-2">Our smart multi-language system instantly transforms your draft into professional emails across different languages.</p>
+        </div>
+
+        <!-- ٹون سلیکشن -->
         <div class="grid grid-cols-2 gap-3 mb-6">
-            <button onclick="selectTone(this, 'Professional')" class="tone-btn active-btn p-3 rounded-lg font-semibold">Professional</button>
-            <button onclick="selectTone(this, 'Friendly')" class="tone-btn p-3 rounded-lg font-semibold">Friendly</button>
-            <button onclick="selectTone(this, 'Formal')" class="tone-btn p-3 rounded-lg font-semibold">Formal</button>
-            <button onclick="selectTone(this, 'Concise')" class="tone-btn p-3 rounded-lg font-semibold">Concise</button>
+            <button onclick="selectTone(this, 'Professional')" class="tone-btn active-btn p-3 rounded-xl font-semibold">Professional</button>
+            <button onclick="selectTone(this, 'Friendly')" class="tone-btn p-3 rounded-xl font-semibold">Friendly</button>
+            <button onclick="selectTone(this, 'Formal')" class="tone-btn p-3 rounded-xl font-semibold">Formal</button>
+            <button onclick="selectTone(this, 'Concise')" class="tone-btn p-3 rounded-xl font-semibold">Concise</button>
         </div>
 
-        <textarea id="input" class="w-full h-32 p-4 bg-slate-50 border border-slate-300 rounded-lg mb-6 focus:ring-2 focus:ring-blue-200 outline-none" placeholder="Enter your draft..."></textarea>
+        <textarea id="input" class="w-full h-32 p-4 border border-slate-300 rounded-xl mb-6 outline-none" placeholder="Write your draft here..."></textarea>
         
-        <button onclick="refineEmail()" class="w-full hbl-blue text-white py-3 rounded-lg font-bold text-lg hover:bg-blue-900 transition">Transform Draft</button>
-
-        <div id="outputContainer" class="hidden mt-6">
-            <div id="output" class="p-5 hbl-light text-[#004a99] rounded-lg border border-blue-200 whitespace-pre-line mb-4 font-medium leading-relaxed"></div>
-            <button onclick="copyToClipboard()" class="w-full bg-slate-200 text-slate-700 py-3 rounded-lg font-bold hover:bg-slate-300">Copy to Clipboard</button>
-        </div>
+        <button id="refine-btn" onclick="refineEmail()" class="w-full green-bg text-white py-4 rounded-xl font-bold text-lg">Refine My Email</button>
     </div>
 
     <script>
-        let currentTone = "Professional";
+        const content = {
+            en: { title: "Into Global Professional Emails", desc: "Our smart multi-language system instantly transforms your draft into professional emails across different languages", btn: "Refine My Email" },
+            ur: { title: "گلوبل پروفیشنل ای میلز", desc: "ہمارا سمارٹ ملٹی لینگویج سسٹم آپ کے مسودے کو فوری طور پر مختلف زبانوں میں پروفیشنل ای میلز میں تبدیل کرتا ہے", btn: "ای میل درست کریں" },
+            de: { title: "Globale professionelle E-Mails", desc: "Unser intelligentes System transformiert Ihren Entwurf sofort in professionelle E-Mails.", btn: "E-Mail verfeinern" },
+            fr: { title: "E-mails professionnels mondiaux", desc: "Notre système intelligent transforme instantanément votre brouillon en e-mails professionnels.", btn: "Affiner mon e-mail" },
+            es: { title: "Correos electrónicos profesionales", desc: "Nuestro sistema inteligente transforma al instante su borrador en correos profesionales.", btn: "Refinar mi correo" }
+        };
+
+        function updateLanguage() {
+            const lang = document.getElementById('langSelector').value;
+            document.getElementById('main-title').innerText = content[lang].title;
+            document.getElementById('desc').innerText = content[lang].desc;
+            document.getElementById('refine-btn').innerText = content[lang].btn;
+            document.body.dir = (lang === 'ur') ? 'rtl' : 'ltr';
+        }
+
         function selectTone(btn, tone) {
             document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active-btn'));
             btn.classList.add('active-btn');
-            currentTone = tone;
         }
-
-        function refineEmail() {
-            const text = document.getElementById('input').value;
-            const templates = {
-                "Professional": `Dear Team,\n\nI am writing to formally communicate that due to unforeseen personal obligations, I anticipate a delay in my arrival today. I expect to be on-site by 12:00 PM. I appreciate your understanding.\n\nBest regards,\n[Your Name]`,
-                "Friendly": `Hi team,\n\nI wanted to let you know I'm running a bit behind today due to some personal tasks at home. I'll be in by 12:00 PM. Thanks for your flexibility!\n\nBest,\n[Your Name]`,
-                "Formal": `Dear Colleagues,\n\nPlease be advised of my delayed arrival today, effective until 12:00 PM, due to external personal commitments. I apologize for any inconvenience.\n\nSincerely,\n[Your Name]`,
-                "Concise": `Team,\n\nRunning late today. I'll be in by 12:00 PM. Thanks!\n\nBest,\n[Your Name]`
-            };
-            document.getElementById('output').innerText = templates[currentTone];
-            document.getElementById('outputContainer').classList.remove('hidden');
-        }
-
-        function copyToClipboard() {
-            navigator.clipboard.writeText(document.getElementById('output').innerText);
-            alert("Copied!");
-        }
+        
+        function refineEmail() { alert("Refining email..."); }
     </script>
 </body>
 </html>
