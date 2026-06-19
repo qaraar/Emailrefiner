@@ -3,76 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EmailCraft | Professional AI Refiner</title>
+    <title>EmailRefiner Global | AI Assistant</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
-        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .active-btn { background-color: #059669 !important; color: white !important; border-color: #059669 !important; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .premium-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05); }
+        .auto-expand { overflow: hidden; resize: none; min-height: 120px; }
+        .active-btn { background: #0f172a !important; color: #ffffff !important; }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen py-10">
+<body class="py-10 px-4">
 
-    <div class="max-w-2xl mx-auto glass p-8 rounded-3xl shadow-2xl border border-slate-200">
-        <div class="flex items-center gap-4 mb-8">
-            <div class="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-emerald-200">EC</div>
-            <div>
-                <h1 class="text-2xl font-bold text-slate-900">EmailCraft</h1>
-                <p class="text-slate-500 text-sm">Professional Communication, Perfected.</p>
-            </div>
-            <select id="langSelector" onchange="updateUI()" class="ml-auto p-2 text-sm border rounded-lg outline-none">
+    <div class="max-w-3xl mx-auto premium-card p-8 rounded-[2rem]">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-extrabold text-slate-900">EmailRefiner <span class="text-indigo-600">Global</span></h1>
+            <select id="langSelector" onchange="changeLanguage()" class="p-2 border rounded-xl bg-slate-50 font-semibold outline-none cursor-pointer">
                 <option value="en">English</option>
-                <option value="ur">اردو</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+                <option value="de">Deutsch (German)</option>
+                <option value="fr">Français (French)</option>
+                <option value="zh">中文 (Chinese)</option>
             </select>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-            <button onclick="setTone(this, 'Professional')" class="tone-btn active-btn p-3 rounded-xl border border-slate-200 font-semibold text-sm transition-all hover:border-emerald-600">Professional</button>
-            <button onclick="setTone(this, 'Friendly')" class="tone-btn p-3 rounded-xl border border-slate-200 font-semibold text-sm transition-all hover:border-emerald-600">Friendly</button>
-            <button onclick="setTone(this, 'Formal')" class="tone-btn p-3 rounded-xl border border-slate-200 font-semibold text-sm transition-all hover:border-emerald-600">Formal</button>
-            <button onclick="setTone(this, 'Concise')" class="tone-btn p-3 rounded-xl border border-slate-200 font-semibold text-sm transition-all hover:border-emerald-600">Concise</button>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+            <button onclick="selectTone(this, 'Professional')" class="tone-btn active-btn p-4 rounded-xl border border-slate-200 font-semibold transition-all">Professional</button>
+            <button onclick="selectTone(this, 'Friendly')" class="tone-btn p-4 rounded-xl border border-slate-200 font-semibold hover:border-slate-400 transition-all">Friendly</button>
+            <button onclick="selectTone(this, 'Formal')" class="tone-btn p-4 rounded-xl border border-slate-200 font-semibold hover:border-slate-400 transition-all">Formal</button>
+            <button onclick="selectTone(this, 'Concise')" class="tone-btn p-4 rounded-xl border border-slate-200 font-semibold hover:border-slate-400 transition-all">Concise</button>
         </div>
 
-        <textarea id="input" class="w-full h-48 p-5 bg-slate-50 border border-slate-200 rounded-2xl mb-6 outline-none focus:ring-4 focus:ring-emerald-100 transition-all" placeholder="Paste your rough draft here..."></textarea>
+        <textarea id="input" oninput="autoGrow(this)" class="w-full auto-expand p-6 bg-slate-50 border border-slate-200 rounded-2xl mb-6 outline-none focus:ring-2 focus:ring-indigo-500 text-lg transition-all" placeholder="Enter your draft..."></textarea>
         
-        <button onclick="refineEmail()" class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-emerald-700 shadow-xl shadow-emerald-200 transition-all">Refine My Email</button>
+        <button id="refineBtn" onclick="processEmail()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-indigo-700 transition-all shadow-lg">Refine Email</button>
 
-        <div id="outputContainer" class="hidden mt-8 border-t pt-8">
-            <h3 class="text-slate-400 text-xs uppercase tracking-widest font-bold mb-3">Refined Version</h3>
-            <div id="output" class="w-full h-48 p-6 bg-slate-900 text-emerald-400 rounded-2xl font-mono text-sm overflow-y-auto shadow-inner"></div>
-            <button onclick="copyToClipboard()" class="mt-4 w-full py-3 bg-slate-100 text-slate-600 font-semibold rounded-xl hover:bg-slate-200">Copy to Clipboard</button>
+        <div id="outputContainer" class="hidden mt-10 border-t pt-8">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="resultTitle" class="text-slate-900 font-bold">Refined Result</h3>
+                <button onclick="copyToClipboard()" class="text-indigo-600 text-sm font-semibold hover:underline">Copy</button>
+            </div>
+            <div id="output" class="w-full p-8 bg-white border border-slate-200 rounded-2xl text-slate-700 text-lg leading-relaxed whitespace-pre-wrap shadow-inner min-h-[120px]"></div>
         </div>
     </div>
 
     <script>
-        let selectedTone = 'Professional';
-        
-        function setTone(btn, tone) {
-            document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active-btn'));
-            btn.classList.add('active-btn');
-            selectedTone = tone;
+        const uiData = {
+            en: { refineBtn: "Refine Email", resultTitle: "Refined Result" },
+            hi: { refineBtn: "ईमेल रिफाइन करें", resultTitle: "रिफाइन किया हुआ ईमेल" },
+            de: { refineBtn: "E-Mail verfeinern", resultTitle: "Verfeinertes Ergebnis" },
+            fr: { refineBtn: "Affiner l'e-mail", resultTitle: "Résultat raffiné" },
+            zh: { refineBtn: "优化邮件", resultTitle: "优化结果" }
+        };
+
+        // ٹیمپلیٹس جو منتخب زبان اور ٹون کے مطابق چلیں گے
+        const templates = {
+            en: { Professional: "Dear Team,\n\nI am writing to update you on our project status. We are making excellent progress.\n\nBest,\n[Name]", Friendly: "Hi team!\n\nJust wanted to share a quick update on our project progress. Everything is looking great!\n\nBest,\n[Name]", Formal: "Dear Colleagues,\n\nThis is to formally notify you regarding the project status. We are on schedule.\n\nSincerely,\n[Name]", Concise: "Team,\n\nProject on track. Update to follow.\n\nBest,\n[Name]" },
+            hi: { Professional: "प्रिय टीम,\n\nमैं आपको हमारे प्रोजेक्ट की स्थिति के बारे में अपडेट करना चाहता हूँ। हम बहुत अच्छी प्रगति कर रहे हैं।\n\nसादर,\n[नाम]", Friendly: "नमस्ते टीम!\n\nमैं हमारे प्रोजेक्ट की प्रगति के बारे में एक छोटा सा अपडेट शेयर करना चाहता हूँ। सब कुछ बहुत अच्छा लग रहा है!\n\nशुभकामनाएं,\n[नाम]", Formal: "प्रिय सहयोगियों,\n\nयह आपको प्रोजेक्ट की स्थिति के बारे में औपचारिक रूप से सूचित करने के लिए है। हम समय पर चल रहे हैं।\n\nसादर,\n[नाम]", Concise: "टीम,\n\nप्रोजेक्ट सही ट्रैक पर है। अपडेट जल्द ही दिया जाएगा।\n\nशुभकामनाएं,\n[नाम]" },
+            de: { Professional: "Sehr geehrtes Team,\n\nich möchte Sie über den aktuellen Projektstatus informieren. Wir machen hervorragende Fortschritte.\n\nBeste Grüße,\n[Name]", Friendly: "Hallo Team!\n\nIch wollte nur ein kurzes Update zu unserem Projektfortschritt geben. Alles sieht großartig aus!\n\nBeste Grüße,\n[Name]", Formal: "Sehr geehrte Kollegen,\n\ndies dient der formellen Benachrichtigung über den Projektstatus. Wir liegen im Zeitplan.\n\nMit freundlichen Grüßen,\n[Name]", Concise: "Team,\n\nProjekt auf Kurs. Update folgt.\n\nBeste Grüße,\n[Name]" },
+            fr: { Professional: "Chère équipe,\n\nJe vous écris pour vous informer de l'état de notre projet. Nous faisons d'excellents progrès.\n\nCordialement,\n[Nom]", Friendly: "Bonjour l'équipe !\n\nJe voulais juste partager une petite mise à jour sur nos progrès. Tout a l'air génial !\n\nMeilleures salutations,\n[Nom]", Formal: "Chers collègues,\n\nCeci est pour vous informer officiellement de l'état du projet. Nous sommes dans les temps.\n\nCordialement,\n[Nom]", Concise: "Équipe,\n\nProjet sur la bonne voie. Mise à jour à suivre.\n\nCordialement,\n[Nom]" },
+            zh: { Professional: "亲爱的团队，\n\n我写信是为了向您更新我们的项目状态。我们取得了很好的进展。\n\n最诚挚的问候，\n[姓名]", Friendly: "团队好！\n\n只想分享一下我们项目进度的最新情况。一切看起来都很棒！\n\n祝好，\n[姓名]", Formal: "各位同事，\n\n特此正式通知您有关项目状态的信息。我们进度按计划进行。\n\n此致，\n[姓名]", Concise: "团队，\n\n项目进行中。后续会有更新。\n\n祝好，\n[姓名]" }
+        };
+
+        let currentTone = 'Professional';
+        let currentLang = 'en';
+
+        function changeLanguage() {
+            currentLang = document.getElementById('langSelector').value;
+            document.getElementById('refineBtn').innerText = uiData[currentLang].refineBtn;
+            document.getElementById('resultTitle').innerText = uiData[currentLang].resultTitle;
         }
 
-        function refineEmail() {
-            const input = document.getElementById('input').value;
-            if(!input) return alert("Please enter some text!");
-            
-            const results = {
-                "Professional": "Dear Team,\n\nI am writing to provide a formal update regarding the current project. We are making excellent progress and anticipate meeting our deadlines effectively.\n\nBest Regards,\n[Name]",
-                "Friendly": "Hi everyone! Hope you're all doing well. Just wanted to let you know that things are moving along great with the project. Thanks for all your hard work!\n\nBest,\n[Name]",
-                "Formal": "To whom it may concern,\n\nPlease accept this correspondence as an update regarding the project status. We remain on schedule.\n\nSincerely,\n[Name]",
-                "Concise": "Team,\n\nQuick update: The project is on track and moving forward as planned.\n\nBest,\n[Name]"
-            };
+        function selectTone(btn, tone) {
+            document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active-btn'));
+            btn.classList.add('active-btn');
+            currentTone = tone;
+        }
 
-            document.getElementById('output').innerText = results[selectedTone];
+        function autoGrow(element) { element.style.height = "5px"; element.style.height = (element.scrollHeight) + "px"; }
+
+        function processEmail() {
+            const input = document.getElementById('input').value;
+            if(!input) return alert("Please enter text!");
+            document.getElementById('output').innerText = templates[currentLang][currentTone];
             document.getElementById('outputContainer').classList.remove('hidden');
         }
 
         function copyToClipboard() {
             const text = document.getElementById('output').innerText;
-            navigator.clipboard.writeText(text);
+            navigator.clipboard.writeText(text).then(() => alert("Copied!"));
         }
     </script>
 </body>
