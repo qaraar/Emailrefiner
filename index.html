@@ -6,30 +6,32 @@
     <title>EmailRefiner Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
         
         .premium-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
-        
-        /* گرین بٹن اسٹائل */
         .emerald-btn { background-color: #059669; color: white; }
         .emerald-btn:hover { background-color: #047857; }
         .active-btn { background-color: #065f46 !important; color: white !important; }
         
-        /* آؤٹ پٹ باکس کی سیٹنگ */
-        #output { min-height: 150px; }
+        /* Toast Notification Styling */
+        #toast {
+            visibility: hidden; min-width: 200px; background-color: #333; color: #fff; text-align: center;
+            border-radius: 50px; padding: 12px; position: fixed; z-index: 1; bottom: 30px; font-size: 14px;
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body class="py-10 px-4">
 
-    <div class="max-w-2xl mx-auto premium-card p-6 md:p-8 rounded-[2rem]">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-2xl font-extrabold text-emerald-900">EmailRefiner <span class="text-emerald-600">Pro</span></h1>
-            <select id="lang" class="p-2 border border-emerald-100 rounded-xl bg-emerald-50 text-emerald-800 font-semibold outline-none">
-                <option value="en">English</option>
-                <option value="hi">हिन्दी</option>
-                <option value="de">Deutsch</option>
-            </select>
+    <div id="toast">Copied to clipboard!</div>
+
+    <div class="max-w-2xl mx-auto premium-card p-8 rounded-[2rem]">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">EmailRefiner <span class="text-emerald-600">Pro</span></h1>
+            <p class="text-emerald-700 mt-2 font-medium">Transform your drafts into professional emails instantly.</p>
         </div>
 
         <div class="grid grid-cols-2 gap-3 mb-6">
@@ -39,13 +41,12 @@
             <button onclick="setTone(this, 'Concise')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Concise</button>
         </div>
 
-        <textarea id="input" class="w-full p-5 border-2 border-emerald-100 rounded-2xl mb-6 outline-none focus:ring-2 focus:ring-emerald-500 transition-all min-h-[150px]" placeholder="Paste your draft here..."></textarea>
+        <textarea id="input" class="w-full p-5 border-2 border-emerald-100 rounded-2xl mb-6 outline-none focus:ring-2 focus:ring-emerald-500 min-h-[150px]" placeholder="Type your draft here..."></textarea>
         
         <button onclick="refine()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all">Refine My Email</button>
 
         <div id="outputArea" class="hidden mt-8 border-t pt-6">
             <div id="output" class="w-full p-6 bg-slate-50 border-2 border-emerald-100 rounded-2xl text-slate-700 leading-relaxed whitespace-pre-wrap"></div>
-            
             <button onclick="copy()" class="mt-4 w-full py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all">Copy to Clipboard</button>
         </div>
     </div>
@@ -60,20 +61,19 @@
 
         function refine() {
             const input = document.getElementById('input').value;
-            if(!input) return alert("Please write something!");
-
-            // نمونے کے لیے پروفیشنل ای میل (یہاں اصل AI انٹیگریشن آئے گی)
-            const response = "Dear Team,\n\nI am writing to formally request a three-day leave of absence, starting from Monday. Due to an urgent family medical matter, my presence at home is currently required. \n\nI have ensured that all my tasks for the week are completed, so there are no outstanding deliverables. I have also made arrangements to stay reachable via phone for anything urgent.\n\nThank you for your understanding.\n\nBest Regards,\n[Your Name]";
-            
-            const out = document.getElementById('output');
-            out.innerText = response;
+            if(!input) return;
+            // یہاں آپ کی AI Logic ہوگی
+            document.getElementById('output').innerText = "Dear Manager,\n\nI am writing to inform you that I am unable to attend work today due to an unforeseen health issue. I have made progress on the project report and will ensure it is finalized by tomorrow at 10:00 AM.\n\nThank you for your understanding.\n\nBest Regards,\n[Your Name]";
             document.getElementById('outputArea').classList.remove('hidden');
         }
 
         function copy() {
             const text = document.getElementById('output').innerText;
             navigator.clipboard.writeText(text);
-            alert("Copied to clipboard!");
+            // Toast دکھانا
+            var x = document.getElementById("toast");
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
         }
     </script>
 </body>
