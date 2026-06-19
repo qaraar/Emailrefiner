@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EmailRefiner Pro</title>
+    <title>EmailRefiner</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap');
@@ -26,11 +26,13 @@
 </head>
 <body class="py-10 px-4">
 
+    <!-- Toast Notification -->
     <div id="toast">Copied to clipboard!</div>
 
     <div class="max-w-2xl mx-auto premium-card p-8 rounded-[2rem]">
+        <!-- Brand Section - "Pro" removed -->
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">EmailRefiner <span class="text-emerald-600">Pro</span></h1>
+            <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">EmailRefiner</h1>
             <p class="text-emerald-700 mt-2 font-medium">Transform your drafts into professional emails instantly.</p>
         </div>
 
@@ -62,15 +64,21 @@
         function refine() {
             const input = document.getElementById('input').value;
             if(!input) return;
-            // یہاں آپ کی AI Logic ہوگی
-            document.getElementById('output').innerText = "Dear Manager,\n\nI am writing to inform you that I am unable to attend work today due to an unforeseen health issue. I have made progress on the project report and will ensure it is finalized by tomorrow at 10:00 AM.\n\nThank you for your understanding.\n\nBest Regards,\n[Your Name]";
+
+            const responses = {
+                "Professional": "Dear Team,\n\nI am writing to formally request leave due to urgent personal commitments. I have ensured all my tasks are current and will resume duties at the earliest opportunity. Thank you for your understanding.\n\nBest Regards,\n[Your Name]",
+                "Friendly": "Hi everyone!\n\nJust wanted to let you know I need to take a few days off for some personal reasons. I've finished up my tasks, so everything should be smooth. Catch you all soon!\n\nBest,\n[Your Name]",
+                "Formal": "To the Management,\n\nThis is to formally notify you of my request for leave of absence effective immediately, due to unforeseen personal obligations. I assure you that all ongoing projects are well-managed. I appreciate your professional consideration.\n\nRespectfully,\n[Your Name]",
+                "Concise": "Team,\n\nRequesting leave for a few days due to personal matters. Work is covered. Will be back shortly.\n\nRegards,\n[Your Name]"
+            };
+
+            document.getElementById('output').innerText = responses[currentTone];
             document.getElementById('outputArea').classList.remove('hidden');
         }
 
         function copy() {
             const text = document.getElementById('output').innerText;
             navigator.clipboard.writeText(text);
-            // Toast دکھانا
             var x = document.getElementById("toast");
             x.className = "show";
             setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
