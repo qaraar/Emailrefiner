@@ -9,6 +9,9 @@
 <body class="bg-slate-50 p-6">
     <div class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow-lg">
         <h1 class="text-2xl font-bold mb-4">Email Refiner</h1>
+        
+        <input type="password" id="api_key_input" class="w-full p-2 border rounded-lg mb-4" placeholder="Enter API Key here">
+        
         <textarea id="input" class="w-full h-32 p-3 border rounded-lg mb-4" placeholder="Paste your rough email..."></textarea>
         <button onclick="refineEmail()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold">Refine</button>
         <div id="output" class="mt-4 p-3 bg-slate-100 rounded-lg min-h-[50px]"></div>
@@ -16,22 +19,35 @@
 
     <script>
         async function refineEmail() {
-            // اپنی API Key یہاں پیسٹ کریں
-            const API_KEY = "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"; 
+            const API_KEY = document.getElementById('api_key_input').value;
             const text = document.getElementById('input').value;
             const output = document.getElementById('output');
 
+            if (!API_KEY) {
+                alert("Please enter your API Key!");
+                return;
+            }
+
             output.innerText = "Processing...";
             try {
+                // گوگل جیمنی API کا یو آر ایل
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: "Rewrite this email professionally: " + text }] }] })
+                    body: JSON.stringify({ 
+                        contents: [{ parts: [{ text: "Rewrite this email professionally: " + text }] }] 
+                    })
                 });
+                
                 const data = await response.json();
-                output.innerText = data.candidates[0].content.parts[0].text;
+                
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    output.innerText = data.candidates[0].content.parts[0].text;
+                } else {
+                    output.innerText = "Error: Check your API Key.";
+                }
             } catch (e) {
-                output.innerText = "Error: Check API Key or Internet.";
+                output.innerText = "Error: Connection failed.";
             }
         }
     </script>
