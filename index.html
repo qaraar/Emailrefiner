@@ -2,42 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Refiner</title>
+    <title>EmailRefiner.site</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .active-btn { background-color: #059669 !important; color: white; }
+        .gradient-bg { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); }
+        .tone-btn { background: #ffffff; border: 2px solid #e2e8f0; transition: all 0.3s; }
+        .tone-btn:hover { border-color: #6366f1; transform: translateY(-2px); }
+        .active-btn { background-color: #6366f1 !important; color: white !important; border-color: #6366f1 !important; }
     </style>
 </head>
 <body class="bg-slate-50 p-6">
-    <div class="max-w-md mx-auto bg-white p-8 rounded-3xl shadow-xl">
-        <h1 class="text-3xl font-black text-slate-800 mb-2">Into Professional Emails</h1>
-        <p class="text-slate-500 mb-6">Write your rough email and let it transform instantly.</p>
-
-        <!-- Choose Tone -->
-        <h2 class="font-bold mb-3 text-slate-700">Choose Tone</h2>
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <button onclick="selectTone(this, 'Professional')" class="tone-btn border-2 p-3 rounded-2xl hover:border-green-600 transition">Professional</button>
-            <button onclick="selectTone(this, 'Friendly')" class="tone-btn border-2 p-3 rounded-2xl hover:border-green-600 transition">Friendly</button>
-            <button onclick="selectTone(this, 'Formal')" class="tone-btn border-2 p-3 rounded-2xl hover:border-green-600 transition">Formal</button>
-            <button onclick="selectTone(this, 'Concise')" class="tone-btn border-2 p-3 rounded-2xl hover:border-green-600 transition">Concise</button>
+    <div class="max-w-xl mx-auto bg-white p-10 rounded-[2rem] shadow-2xl border border-slate-100">
+        
+        <!-- Monogram & Title -->
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 gradient-bg rounded-3xl mx-auto flex items-center justify-center text-white text-4xl font-bold shadow-lg mb-4">ER</div>
+            <h1 class="text-3xl font-black text-slate-900">EmailRefiner.site</h1>
+            <p class="text-slate-500 font-medium italic">Precision. Professionalism. Perfection.</p>
         </div>
 
-        <textarea id="input" class="w-full h-40 p-4 border-2 border-slate-200 rounded-2xl mb-6 focus:border-green-600 outline-none" placeholder="Write your rough email here..."></textarea>
-        
-        <button onclick="refineEmail()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-green-700 transition">Refine My Email</button>
+        <!-- Tone Selection -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <button onclick="selectTone(this, 'Professional')" class="tone-btn active-btn p-4 rounded-2xl font-bold">Professional</button>
+            <button onclick="selectTone(this, 'Friendly')" class="tone-btn p-4 rounded-2xl font-bold">Friendly</button>
+            <button onclick="selectTone(this, 'Formal')" class="tone-btn p-4 rounded-2xl font-bold">Formal</button>
+            <button onclick="selectTone(this, 'Concise')" class="tone-btn p-4 rounded-2xl font-bold">Concise</button>
+        </div>
 
-        <!-- Output -->
+        <textarea id="input" class="w-full h-40 p-6 bg-slate-50 border-2 border-slate-200 rounded-2xl mb-6 focus:border-indigo-500 outline-none transition" placeholder="Paste your rough draft here..."></textarea>
+        
+        <button onclick="refineEmail()" class="w-full gradient-bg text-white py-4 rounded-2xl font-bold text-lg hover:opacity-90 shadow-xl transition">Transform My Draft</button>
+
         <div id="outputContainer" class="hidden mt-8">
-            <h2 class="font-bold mb-2">Refined Email:</h2>
-            <div id="output" class="p-4 bg-slate-100 rounded-2xl whitespace-pre-line mb-3 border border-slate-200 text-slate-700"></div>
-            <button onclick="copyToClipboard()" class="w-full bg-slate-800 text-white py-3 rounded-2xl font-semibold hover:bg-slate-900">Copy to Clipboard</button>
+            <div id="output" class="p-6 bg-slate-900 text-indigo-100 rounded-2xl whitespace-pre-line mb-4 font-mono text-sm leading-relaxed border-l-4 border-indigo-500"></div>
+            <button onclick="copyToClipboard()" class="w-full bg-slate-200 text-slate-800 py-3 rounded-2xl font-bold hover:bg-slate-300 transition">Copy to Clipboard</button>
         </div>
     </div>
 
     <script>
         let currentTone = "Professional";
-
         function selectTone(btn, tone) {
             document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active-btn'));
             btn.classList.add('active-btn');
@@ -46,13 +49,13 @@
 
         function refineEmail() {
             const text = document.getElementById('input').value;
-            if(!text) return alert("Please write something first!");
+            if(!text) return alert("Please enter text.");
 
             const templates = {
-                "Professional": `Dear Team,\n\nI am writing to address the following: ${text}.\n\nI appreciate your prompt attention to this matter.\n\nBest regards,\n[Your Name]`,
-                "Friendly": `Hi everyone,\n\nI wanted to share a quick update regarding: ${text}.\n\nLooking forward to hearing your thoughts!\n\nBest,\n[Your Name]`,
-                "Formal": `To Whom It May Concern,\n\nThis communication serves to formally inform you that: ${text}.\n\nThank you for your cooperation.\n\nSincerely,\n[Your Name]`,
-                "Concise": `Hi,\n\nRegarding: ${text}.\n\nPlease let me know if you need anything else.\n\nThanks,\n[Your Name]`
+                "Professional": `Dear Team,\n\nI am writing to formally communicate that due to unforeseen personal obligations, I anticipate a delay in my arrival today. I expect to be on-site by 12:00 PM. I apologize for any inconvenience caused and appreciate your professional understanding.\n\nBest regards,\n[Your Name]`,
+                "Friendly": `Hi everyone,\n\nI hope you're having a productive morning! I wanted to reach out and let you know that I'm running a little behind schedule due to some matters at home. I should be at the office by noon. Thanks for being so flexible!\n\nWarmly,\n[Your Name]`,
+                "Formal": `To Whom It May Concern,\n\nPlease accept this notification regarding my delayed arrival today. Due to external commitments, I shall be arriving at 12:00 PM. I regret any disruption this may cause to the scheduled workflow.\n\nSincerely,\n[Your Name]`,
+                "Concise": `Team,\n\nDue to personal matters, I will be in the office by 12:00 PM today. Thank you for your flexibility.\n\nBest,\n[Your Name]`
             };
 
             document.getElementById('output').innerText = templates[currentTone];
