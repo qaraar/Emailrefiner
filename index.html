@@ -4,28 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO & Meta Tags -->
-    <title>Email Refiner - AI-Powered Professional Writing Tool</title>
-    <meta name="description" content="Transform your drafts into professional, clear, and concise emails instantly. Use our AI-powered tool to elevate your communication and refine your writing style for any context.">
-    <meta name="keywords" content="Email Refiner, AI Email Writer, Professional Email Assistant, Email Writing Tool, Improve Email Tone">
-    <meta property="og:title" content="Email Refiner - AI-Powered Professional Writing Tool">
-    <meta property="og:description" content="Transform your drafts into professional, clear, and concise emails instantly with AI.">
+    <title>Email Refiner — Master Your Professional Email Communication</title>
+    <meta name="description" content="Struggling with email drafting? Use Email Refiner to instantly polish your tone, fix clarity, and master your professional email communication with AI-powered precision.">
+    <meta name="keywords" content="Email Refiner, AI Email Assistant, Professional Email Writing, Business Communication, Polish Email Tone">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-        
         .premium-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
         .emerald-btn { background-color: #059669; color: white; }
         .emerald-btn:hover { background-color: #047857; }
         .active-btn { background-color: #065f46 !important; color: white !important; }
-        
-        /* Toast Notification Styling */
-        #toast {
-            visibility: hidden; min-width: 200px; background-color: #333; color: #fff; text-align: center;
-            border-radius: 50px; padding: 12px; position: fixed; z-index: 1; bottom: 30px; font-size: 14px;
-        }
+        #toast { visibility: hidden; min-width: 200px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 1; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 14px; }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
@@ -33,14 +24,12 @@
 </head>
 <body class="py-10 px-4">
 
-    <!-- Toast Notification -->
     <div id="toast">Copied to clipboard!</div>
 
     <div class="max-w-2xl mx-auto premium-card p-8 rounded-[2rem]">
-        <!-- Brand Section -->
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">EmailRefiner</h1>
-            <p class="text-emerald-700 mt-2 font-medium">Transform your drafts into professional emails instantly.</p>
+            <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
+            <p class="text-emerald-700 mt-2 font-medium italic">Master Your Professional Email Communication</p>
         </div>
 
         <div class="grid grid-cols-2 gap-3 mb-6">
@@ -50,9 +39,9 @@
             <button onclick="setTone(this, 'Concise')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Concise</button>
         </div>
 
-        <textarea id="input" class="w-full p-5 border-2 border-emerald-100 rounded-2xl mb-6 outline-none focus:ring-2 focus:ring-emerald-500 min-h-[150px]" placeholder="Type your draft here..."></textarea>
+        <textarea id="input" class="w-full p-5 border-2 border-emerald-100 rounded-2xl mb-6 outline-none focus:ring-2 focus:ring-emerald-500 min-h-[150px]" placeholder="Paste your draft email here..."></textarea>
         
-        <button onclick="refine()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all">Refine My Email</button>
+        <button id="refineBtn" onclick="refine()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all">Refine My Email</button>
 
         <div id="outputArea" class="hidden mt-8 border-t pt-6">
             <div id="output" class="w-full p-6 bg-slate-50 border-2 border-emerald-100 rounded-2xl text-slate-700 leading-relaxed whitespace-pre-wrap"></div>
@@ -62,25 +51,56 @@
 
     <script>
         let currentTone = 'Professional';
+        const WORKER_URL = "YOUR_CLOUDFLARE_WORKER_URL_HERE"; 
+        
+        let lastRefinedInput = ""; 
+        let refinedCount = 0;
+
         function setTone(btn, tone) {
             document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active-btn'));
             btn.classList.add('active-btn');
             currentTone = tone;
         }
 
-        function refine() {
-            const input = document.getElementById('input').value;
+        async function refine() {
+            const inputField = document.getElementById('input');
+            const input = inputField.value.trim();
+            const btn = document.getElementById('refineBtn');
+            
             if(!input) return;
 
-            const responses = {
-                "Professional": "Dear Team,\n\nI am writing to formally request leave due to urgent personal commitments. I have ensured all my tasks are current and will resume duties at the earliest opportunity. Thank you for your understanding.\n\nBest Regards,\n[Your Name]",
-                "Friendly": "Hi everyone!\n\nJust wanted to let you know I need to take a few days off for some personal reasons. I've finished up my tasks, so everything should be smooth. Catch you all soon!\n\nBest,\n[Your Name]",
-                "Formal": "To the Management,\n\nThis is to formally notify you of my request for leave of absence effective immediately, due to unforeseen personal obligations. I assure you that all ongoing projects are well-managed. I appreciate your professional consideration.\n\nRespectfully,\n[Your Name]",
-                "Concise": "Team,\n\nRequesting leave for a few days due to personal matters. Work is covered. Will be back shortly.\n\nRegards,\n[Your Name]"
-            };
+            if (input === lastRefinedInput && refinedCount >= 2) {
+                alert("Please make a small change to your draft to refine again.");
+                return;
+            }
 
-            document.getElementById('output').innerText = responses[currentTone];
-            document.getElementById('outputArea').classList.remove('hidden');
+            if (input !== lastRefinedInput) {
+                refinedCount = 0;
+            }
+
+            btn.innerText = "Processing...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: input, tone: currentTone })
+                });
+                const data = await response.json();
+                
+                document.getElementById('output').innerText = data.refinedEmail;
+                document.getElementById('outputArea').classList.remove('hidden');
+                
+                lastRefinedInput = input;
+                refinedCount++; 
+                
+            } catch (error) {
+                alert("Connection error. Please check your worker link.");
+            } finally {
+                btn.innerText = "Refine My Email";
+                btn.disabled = false;
+            }
         }
 
         function copy() {
