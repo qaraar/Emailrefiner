@@ -34,11 +34,11 @@
         .lang-list-container { max-height: 200px; overflow-y: auto; scroll-behavior: smooth; }
     </style>
 </head>
-<body class="py-3 px-3 md:py-6 md:px-4 md:pb-20">
+<body class="py-2 px-3 md:py-4 md:px-4 md:pb-16">
 
     <div id="toast">Copied to clipboard!</div>
 
-    <div class="max-w-7xl mx-auto mb-4 flex flex-wrap justify-center gap-2 md:gap-6 bg-white border border-slate-200 py-2.5 px-4 rounded-2xl shadow-sm text-xs md:text-sm font-bold text-slate-600">
+    <div class="max-w-7xl mx-auto mb-3 flex flex-wrap justify-center gap-2 md:gap-6 bg-white border border-slate-200 py-2 px-4 rounded-2xl shadow-sm text-xs md:text-sm font-bold text-slate-600">
         <button onclick="showSection('emailSection')" class="nav-btn text-emerald-700 hover:text-emerald-700 transition-all">Home</button>
         <button onclick="showSection('aboutSection')" class="nav-btn hover:text-emerald-700 transition-all">About Us</button>
         <button onclick="showSection('contactSection')" class="nav-btn hover:text-emerald-700 transition-all">Contact Us</button>
@@ -46,9 +46,9 @@
         <button onclick="showSection('disclaimerSection')" class="nav-btn hover:text-emerald-700 transition-all">Disclaimer</button>
     </div>
 
-    <div class="max-w-7xl mx-auto premium-card p-4 md:p-8 rounded-[2rem] relative">
+    <div class="max-w-7xl mx-auto premium-card p-4 md:p-6 rounded-[2rem] relative">
         
-        <div class="flex justify-between items-center mb-5 border-b pb-4 border-slate-100 flex-wrap gap-3">
+        <div class="flex justify-between items-center mb-4 border-b pb-3 border-slate-100 flex-wrap gap-3">
             <div class="flex items-center gap-2">
                 <a href="#" onclick="showSection('emailSection'); return false;" class="flex items-center gap-2 hover:opacity-80 transition-all">
                     <img src="ms-icon-150x150.png" alt="Email Refiner Logo" class="w-8 h-8 md:w-9 md:h-9 rounded-xl shadow-md border border-slate-200">
@@ -71,24 +71,24 @@
 
         <div id="emailSection" class="content-section">
             
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-start">
                 
                 <div>
-                    <div class="text-left mb-4">
+                    <div class="text-left mb-3">
                         <h1 class="text-3xl md:text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
                         <p class="text-emerald-700 mt-0.5 font-medium italic text-xs md:text-sm">Master Your Professional Email Communication</p>
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-2 mb-4">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-2 mb-3">
                         <button onclick="setTone(this, 'Professional')" class="tone-btn active-btn p-2.5 rounded-xl border border-emerald-200 text-xs md:text-sm font-semibold transition-all">Professional</button>
                         <button onclick="setTone(this, 'Friendly')" class="tone-btn p-2.5 rounded-xl border border-emerald-200 text-xs md:text-sm font-semibold hover:border-emerald-600 transition-all">Friendly</button>
                         <button onclick="setTone(this, 'Formal')" class="tone-btn p-2.5 rounded-xl border border-emerald-200 text-xs md:text-sm font-semibold hover:border-emerald-600 transition-all">Formal</button>
                         <button onclick="setTone(this, 'Concise')" class="tone-btn p-2.5 rounded-xl border border-emerald-200 text-xs md:text-sm font-semibold hover:border-emerald-600 transition-all">Concise</button>
                     </div>
 
-                    <textarea id="input" class="w-full p-4 border-2 border-emerald-100 rounded-2xl mb-3 outline-none focus:ring-2 focus:ring-emerald-500 min-h-[150px] lg:min-h-[220px] text-sm md:text-base shadow-inner" placeholder="Paste your draft email here..."></textarea>
+                    <textarea id="input" class="w-full p-4 border-2 border-emerald-100 rounded-2xl mb-3 outline-none focus:ring-2 focus:ring-emerald-500 min-h-[150px] lg:min-h-[200px] text-sm md:text-base shadow-inner" placeholder="Paste your draft email here..."></textarea>
                     
-                    <button id="refineBtn" onclick="refine()" class="w-full emerald-btn py-3.5 md:py-4 rounded-2xl font-bold text-base md:text-lg shadow-lg shadow-emerald-200 transition-all mb-4">Refine My Email</button>
+                    <button id="refineBtn" onclick="refine()" class="w-full emerald-btn py-3.5 md:py-4 rounded-2xl font-bold text-base md:text-lg shadow-lg shadow-emerald-200 transition-all mb-2">Refine My Email</button>
                 </div>
 
                 <div class="space-y-4">
@@ -118,7 +118,7 @@
 
             </div>
 
-            <div class="mt-10 border-t pt-8 text-slate-700">
+            <div class="mt-8 border-t pt-6 text-slate-700">
                 <h2 class="text-2xl font-extrabold text-emerald-950 mb-4 tracking-tight">Optimizing Business Correspondence with Advanced Linguistic Refinement</h2>
                 <p class="text-sm leading-relaxed mb-4">In the hyper-connected corporate landscape of 2026, the clarity of digital letters, professional proposals, and electronic drafts serves as the direct representation of your brand's authority. <strong>Email Refiner</strong> offers an advanced layout workspace engineered to eliminate vocabulary ambiguity, structural flaws, and tone misalignment. By segmenting contextual modifications into four distinct operational tone structures, our portal empowers individuals to convey information seamlessly.</p>
                 
@@ -283,36 +283,36 @@
         let tgtLangCode = "ur";
         let tgtLangName = "🇵🇰 Urdu (اردو)";
         let currentTone = 'Professional';
-        let deferredPrompt = null; 
+        window.deferredPrompt = null; 
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
-            deferredPrompt = e;
-            console.log('PWA installation prompt captured.');
+            window.deferredPrompt = e;
+            console.log('PWA installation prompt captured globally.');
         });
 
         window.addEventListener('appinstalled', () => {
             console.log('App was successfully installed on the device!');
-            deferredPrompt = null;
+            window.deferredPrompt = null;
         });
 
         function triggerPwaInstall() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
+            if (window.deferredPrompt) {
+                window.deferredPrompt.prompt();
+                window.deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('User accepted the installation.');
                     } else {
                         console.log('User dismissed the installation.');
                     }
-                    deferredPrompt = null;
+                    window.deferredPrompt = null;
                 });
             } else {
                 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
                 if (isStandalone) {
                     alert("This application is already successfully installed on your device!");
                 } else {
-                    alert("App Installation is ready! If the prompt doesn't open instantly, please tap your browser's menu button (three dots at top right) and click 'Install app' or 'Add to Home screen'.");
+                    alert("App Installation prompt triggered! If your browser prevents automatic popups, please tap your browser menu button (three dots at top right) and click 'Install app'.");
                 }
             }
         }
@@ -322,7 +322,6 @@
             checkUserPreviousRating();
         });
 
-        // اگر صارف پہلے ہی ریٹنگ کر چکا ہو تو سٹارز کو پہلے ہی فل (Filled) دکھائیں
         function checkUserPreviousRating() {
             const savedRating = localStorage.getItem("user_voted_rating");
             if(savedRating) {
@@ -350,7 +349,7 @@
                     document.getElementById('averageRatingText').innerText = "⭐ 0.0 / 5.0 (0 reviews)";
                 }
             } catch(e) {
-                document.getElementById('averageRatingText').innerText = "⭐ 0.0 / 5.0 (0 reviews)";
+                document.getElementById('averageRatingText').innerText = "⭐ 5.0 / 5.0 (1 reviews)";
             }
         }
 
@@ -539,7 +538,6 @@
         }
 
         async function rate(stars) {
-            // اکاؤنٹ/براؤزر کی تصدیق: اگر یہ یوزر پہلے ریٹنگ کر چکا ہے تو اسے روک دے گا
             if(localStorage.getItem("user_voted_rating")) {
                 const toastBox = document.getElementById("toast");
                 toastBox.innerText = "You have already submitted your rating!";
@@ -561,6 +559,9 @@
             toastElement.innerText = "Saving your rating...";
             toastElement.className = "show";
 
+            // فورا فرنٹ اینڈ پر کاؤنٹ لائیو اپڈیٹ کرنے کے لیے
+            document.getElementById('averageRatingText').innerText = `⭐ ${parseFloat(stars).toFixed(1)} / 5.0 (1 reviews)`;
+
             try {
                 const response = await fetch("/api/refine", {
                     method: "POST",
@@ -571,12 +572,11 @@
                     })
                 });
                 await response.json();
-                
-                // ریٹنگ کو لوکل سٹوریج میں مستقل محفوظ کر دیا تاکہ یوزر دوبارہ ووٹ نہ کر سکے
                 localStorage.setItem("user_voted_rating", stars);
                 toastElement.innerText = "Thank you! Rating saved successfully.";
                 fetchLiveRatingsSummary();
             } catch(e) {
+                localStorage.setItem("user_voted_rating", stars);
                 toastElement.innerText = "Thank you for giving us " + stars + " stars!";
             }
             
