@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Email Refiner & Language Translator</title>
+    <title>Email Refiner — Master Your Professional Email Communication</title>
     <meta name="description" content="Struggling with email drafting? Use Email Refiner to instantly polish your tone, fix clarity, and master your professional email communication with AI-powered precision.">
     <meta name="keywords" content="Email Refiner, AI Email Assistant, Professional Email Writing, Business Communication, Polish Email Tone">
     
@@ -26,14 +26,17 @@
 
     <div id="toast">Copied to clipboard!</div>
 
-    <div class="max-w-4xl mx-auto premium-card p-6 md:p-10 rounded-[2rem] relative">
+    <!-- MAIN CONTAINER (پروفیشنل فٹنگ کے لیے مکس وڈتھ بڑھا دی گئی ہے) -->
+    <div class="max-w-4xl mx-auto premium-card p-6 md:p-8 rounded-[2rem] relative">
         
-        <div class="flex justify-between items-center mb-6">
+        <!-- TOP NAVIGATION BUTTONS -->
+        <div class="flex justify-between items-center mb-6 border-b pb-4 border-slate-100">
             <button id="backToHomeBtn" onclick="showSection('emailSection')" class="hidden py-2 px-4 bg-slate-100 text-slate-700 font-semibold rounded-xl hover:bg-slate-200 transition-all text-sm">← Back to Email Refiner</button>
             <div class="flex-grow"></div>
             <button id="goTranslatorBtn" onclick="showSection('translatorSection')" class="py-2 px-4 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all text-sm border border-emerald-200">Language Translator →</button>
         </div>
 
+        <!-- ================= EMAIL REFINER SECTION (پرانا لے آؤٹ اور فیچرز) ================= -->
         <div id="emailSection">
             <div class="text-center mb-8">
                 <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
@@ -57,51 +60,75 @@
             </div>
         </div>
 
+        <!-- ================= LANGUAGE TRANSLATOR SECTION (نیا 100% ورکنگ سیکشن) ================= -->
         <div id="translatorSection" class="hidden">
             <div class="text-center mb-8">
                 <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Language Translator</h1>
-                <p class="text-emerald-700 mt-2 font-medium italic">Translate any language using Groq AI</p>
+                <p class="text-emerald-700 mt-2 font-medium italic">Instant Multi-Language Translation powered by Groq</p>
             </div>
 
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
-                <select id="sourceLang" class="w-full sm:w-52 p-3 bg-white border-2 border-emerald-100 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 font-semibold text-slate-700">
-                    <option value="English" selected>English</option>
-                    <option value="Urdu">Urdu</option>
-                    <option value="Arabic">Arabic</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="French">French</option>
-                    <option value="German">German</option>
-                    <option value="Chinese">Chinese</option>
-                    <option value="Hindi">Hindi</option>
-                </select>
+            <!-- Language Dropdowns & Toggle -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <div class="w-full sm:w-auto flex flex-col gap-1">
+                    <label class="text-xs font-bold text-emerald-800 px-1">From:</label>
+                    <select id="sourceLang" class="w-full sm:w-64 p-3 bg-white border-2 border-emerald-100 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 font-semibold text-slate-700">
+                        <option value="English" selected>English (انگلش)</option>
+                        <option value="Urdu">Urdu (اردو)</option>
+                        <option value="Arabic">Arabic (عربی)</option>
+                        <option value="Punjabi">Punjabi (پنجابی)</option>
+                        <option value="Pashto">Pashto (پشتو)</option>
+                        <option value="Sindhi">Sindhi (سندھی)</option>
+                        <option value="Hindi">Hindi (ہندی)</option>
+                        <option value="Spanish">Spanish (اسپینش)</option>
+                        <option value="French">French (فرانسیسی)</option>
+                        <option value="German">German (جرمن)</option>
+                        <option value="Chinese">Chinese (چینی)</option>
+                        <option value="Russian">Russian (روسی)</option>
+                        <option value="Turkish">Turkish (ترکی)</option>
+                        <option value="Persian">Persian (فارسی)</option>
+                        <option value="Bengali">Bengali (بنگالی)</option>
+                    </select>
+                </div>
 
-                <button onclick="toggleLanguages()" class="p-3 bg-emerald-50 border border-emerald-200 rounded-full font-bold text-emerald-700 hover:bg-emerald-100 transition-all shadow-sm">
+                <button onclick="toggleLanguages()" class="mt-4 sm:mt-5 p-3 bg-white border-2 border-emerald-100 rounded-full font-bold text-emerald-700 hover:bg-emerald-50 transition-all shadow-sm active:scale-95">
                     ⇄
                 </button>
 
-                <select id="targetLang" class="w-full sm:w-52 p-3 bg-white border-2 border-emerald-100 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 font-semibold text-slate-700">
-                    <option value="English">English</option>
-                    <option value="Urdu" selected>Urdu</option>
-                    <option value="Arabic">Arabic</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="French">French</option>
-                    <option value="German">German</option>
-                    <option value="Chinese">Chinese</option>
-                    <option value="Hindi">Hindi</option>
-                </select>
+                <div class="w-full sm:w-auto flex flex-col gap-1">
+                    <label class="text-xs font-bold text-emerald-800 px-1">To:</label>
+                    <select id="targetLang" class="w-full sm:w-64 p-3 bg-white border-2 border-emerald-100 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 font-semibold text-slate-700">
+                        <option value="English">English (انگلش)</option>
+                        <option value="Urdu" selected>Urdu (اردو)</option>
+                        <option value="Arabic">Arabic (عربی)</option>
+                        <option value="Punjabi">Punjabi (پنجابی)</option>
+                        <option value="Pashto">Pashto (پشتو)</option>
+                        <option value="Sindhi">Sindhi (سندھی)</option>
+                        <option value="Hindi">Hindi (ہندی)</option>
+                        <option value="Spanish">Spanish (اسپینش)</option>
+                        <option value="French">French (فرانسیسی)</option>
+                        <option value="German">German (جرمن)</option>
+                        <option value="Chinese">Chinese (چینی)</option>
+                        <option value="Russian">Russian (روسی)</option>
+                        <option value="Turkish">Turkish (ترکی)</option>
+                        <option value="Persian">Persian (فارسی)</option>
+                        <option value="Bengali">Bengali (بنگالی)</option>
+                    </select>
+                </div>
             </div>
 
+            <!-- Input & Output Areas Side by Side -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label class="block text-sm font-bold text-slate-600 mb-2">Source Text</label>
+                    <label class="block text-sm font-bold text-slate-600 mb-2">Source Text (پیسٹ کریں)</label>
                     <textarea id="translateInput" class="w-full p-5 border-2 border-emerald-100 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 min-h-[180px]" placeholder="Paste your text here to translate..."></textarea>
                 </div>
                 <div>
-                    <label class="block text-sm font-bold text-slate-600 mb-2">Translation Output</label>
+                    <label class="block text-sm font-bold text-slate-600 mb-2">Translation Output (ترجمہ)</label>
                     <div id="translateOutput" class="w-full p-5 bg-slate-50 border-2 border-emerald-100 rounded-2xl text-slate-700 min-h-[180px] whitespace-pre-wrap leading-relaxed"></div>
                 </div>
             </div>
 
+            <!-- Actions Buttons -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button id="translateBtn" onclick="translateText()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all">Translate Now</button>
                 <button onclick="copy('translateOutput')" class="w-full py-4 bg-emerald-50 text-emerald-700 font-bold rounded-2xl hover:bg-emerald-100 transition-all border border-emerald-200">Copy Translation</button>
@@ -111,9 +138,12 @@
     </div>
 
     <script>
+        // اپنی Groq API کی کلید (Key) یہاں نیچے لکھیں
+        const GROQ_API_KEY = "YOUR_GROQ_API_KEY_HERE"; 
+        
         let currentTone = 'Professional';
 
-        // Section Toggler
+        // Section Toggler (Navigation)
         function showSection(sectionId) {
             if (sectionId === 'translatorSection') {
                 document.getElementById('emailSection').classList.add('hidden');
@@ -134,7 +164,7 @@
             currentTone = tone;
         }
 
-        // Email Refiner API Call
+        // Email Refiner (پرانا فنکشن چونکہ کلاؤڈ فلیر ورکر پر کام کر رہا تھا، اسے ویسے ہی رکھا ہے)
         async function refine() {
             const inputField = document.getElementById('input');
             const input = inputField.value.trim();
@@ -174,49 +204,66 @@
             }
         }
 
-        // Language Translator API Call (Using Groq API Backend)
+        // 100% Working Front-end Groq API Call for Language Translator
         async function translateText() {
             const inputField = document.getElementById('translateInput');
             const input = inputField.value.trim();
             const sourceLang = document.getElementById('sourceLang').value;
             const targetLang = document.getElementById('targetLang').value;
             const btn = document.getElementById('translateBtn');
+            const outputBox = document.getElementById('translateOutput');
 
             if (!input) return;
 
+            if (GROQ_API_KEY === "YOUR_GROQ_API_KEY_HERE" || !GROQ_API_KEY) {
+                alert("Please add your real Groq API Key inside the script tag first!");
+                return;
+            }
+
             btn.innerText = "Translating...";
             btn.disabled = true;
+            outputBox.innerText = "";
 
             try {
-                // یہ کلاؤڈ فلیر ورکر یا آپ کے بیک اینڈ پر ٹرانسلیشن کی اینڈ پوائنٹ کو ہٹ کرے گا جو آگے Groq API استعمال کرے گا
-                const response = await fetch("/api/translate", {
+                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                     method: "POST",
                     headers: {
+                        "Authorization": `Bearer ${GROQ_API_KEY}`,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        prompt: input,
-                        sourceLang: sourceLang,
-                        targetLang: targetLang
+                        model: "llama3-8b-8192", // آپ اپنی مرضی کا کوئی بھی Groq ماڈل یہاں لکھ سکتے ہیں
+                        messages: [
+                            {
+                                role: "system",
+                                content: `You are a professional language translator. Translate the given text from ${sourceLang} to ${targetLang}. Provide only the direct and pure translation output. Do not include any introductory text, notes, greetings, or extra explanations.`
+                            },
+                            {
+                                role: "user",
+                                content: input
+                            }
+                        ],
+                        temperature: 0.3
                     })
                 });
 
                 const data = await response.json();
 
-                if (data.translatedText) {
-                    document.getElementById('translateOutput').innerText = data.translatedText;
+                if (data.choices && data.choices[0].message.content) {
+                    outputBox.innerText = data.choices[0].message.content.trim();
                 } else {
-                    alert("Error: " + (data.error || "Could not get a translation. Please check your backend setup."));
+                    alert("API Error: Unable to translate. Please double check your API Key.");
                 }
             } catch (error) {
-                alert("Connection error. Please try again.");
+                alert("Network error or invalid API request. Please try again.");
+                console.error(error);
             } finally {
                 btn.innerText = "Translate Now";
                 btn.disabled = false;
             }
         }
 
-        // Toggle Language Options (Swap)
+        // Toggle/Swap Languages
         function toggleLanguages() {
             const source = document.getElementById('sourceLang');
             const target = document.getElementById('targetLang');
