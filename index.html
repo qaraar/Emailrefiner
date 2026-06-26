@@ -26,17 +26,14 @@
 
     <div id="toast">Copied to clipboard!</div>
 
-    <!-- MAIN CONTAINER (پورے ڈبے کے اندر فٹنگ پرفیکٹ کر دی گئی ہے) -->
     <div class="max-w-4xl mx-auto premium-card p-6 md:p-8 rounded-[2rem] relative">
         
-        <!-- TOP NAVIGATION BUTTONS -->
         <div class="flex justify-between items-center mb-6 border-b pb-4 border-slate-100">
             <button id="backToHomeBtn" onclick="showSection('emailSection')" class="hidden py-2 px-4 bg-slate-100 text-slate-700 font-semibold rounded-xl hover:bg-slate-200 transition-all text-sm">← Back to Email Refiner</button>
             <div class="flex-grow"></div>
             <button id="goTranslatorBtn" onclick="showSection('translatorSection')" class="py-2 px-4 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all text-sm border border-emerald-200">Language Translator →</button>
         </div>
 
-        <!-- ================= EMAIL REFINER SECTION ================= -->
         <div id="emailSection">
             <div class="text-center mb-8">
                 <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
@@ -60,14 +57,12 @@
             </div>
         </div>
 
-        <!-- ================= LANGUAGE TRANSLATOR SECTION ================= -->
         <div id="translatorSection" class="hidden">
             <div class="text-center mb-8">
                 <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Language Translator</h1>
                 <p class="text-emerald-700 mt-2 font-medium italic">Instant Multi-Language Translation powered by Groq</p>
             </div>
 
-            <!-- Language Dropdowns & Toggle -->
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <div class="w-full sm:w-auto flex flex-col gap-1">
                     <label class="text-xs font-bold text-emerald-800 px-1">From:</label>
@@ -116,7 +111,6 @@
                 </div>
             </div>
 
-            <!-- Input & Output Areas Side by Side -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                     <label class="block text-sm font-bold text-slate-600 mb-2">Source Text (پیسٹ کریں)</label>
@@ -128,7 +122,6 @@
                 </div>
             </div>
 
-            <!-- Actions Buttons -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button id="translateBtn" onclick="translateText()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all">Translate Now</button>
                 <button onclick="copy('translateOutput')" class="w-full py-4 bg-emerald-50 text-emerald-700 font-bold rounded-2xl hover:bg-emerald-100 transition-all border border-emerald-200">Copy Translation</button>
@@ -140,7 +133,6 @@
     <script>
         let currentTone = 'Professional';
 
-        // Section Toggler (Navigation)
         function showSection(sectionId) {
             if (sectionId === 'translatorSection') {
                 document.getElementById('emailSection').classList.add('hidden');
@@ -161,7 +153,6 @@
             currentTone = tone;
         }
 
-        // Email Refiner Backend Call (آپ کا پرانا لاجک، جو کلاؤڈ فلیر ورکر کو کال کرتا ہے)
         async function refine() {
             const inputField = document.getElementById('input');
             const input = inputField.value.trim();
@@ -177,24 +168,16 @@
             try {
                 const response = await fetch("/api/refine", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        prompt: input,
-                        tone: currentTone
-                    })
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt: input, tone: currentTone })
                 });
-                
                 const data = await response.json();
-                
                 if (data.refinedEmail) {
                     outputBox.innerText = data.refinedEmail;
                     outputArea.classList.remove('hidden');
                 } else {
                     alert("Error: " + (data.error || "Could not get a response."));
                 }
-                
             } catch (error) {
                 alert("Connection error. Please try again.");
             } finally {
@@ -203,7 +186,6 @@
             }
         }
 
-        // Language Translator Secure Backend Call (یہ آپ کے کلاؤڈ فلیر ورکر کو ہٹ کرے گا، کوئی کی فرنٹ اینڈ پر ایکسپوز نہیں ہو گی)
         async function translateText() {
             const inputField = document.getElementById('translateInput');
             const input = inputField.value.trim();
@@ -221,22 +203,15 @@
             try {
                 const response = await fetch("/api/translate", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        prompt: input,
-                        sourceLang: sourceLang,
-                        targetLang: targetLang
-                    })
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt: input, sourceLang: sourceLang, targetLang: targetLang })
                 });
 
                 const data = await response.json();
-
                 if (data.translatedText) {
                     outputBox.innerText = data.translatedText;
                 } else {
-                    alert("Error: " + (data.error || "Could not get a translation. Please ensure /api/translate is configured in Cloudflare."));
+                    alert("Error: " + (data.error || "Translation failed. Please check worker configuration."));
                 }
             } catch (error) {
                 alert("Connection error. Please try again.");
@@ -247,7 +222,6 @@
             }
         }
 
-        // Toggle/Swap Languages
         function toggleLanguages() {
             const source = document.getElementById('sourceLang');
             const target = document.getElementById('targetLang');
@@ -256,11 +230,9 @@
             target.value = temp;
         }
 
-        // Reusable Copy Function
         function copy(elementId) {
             const text = document.getElementById(elementId).innerText || document.getElementById(elementId).value;
             if(!text) return;
-            
             navigator.clipboard.writeText(text);
             var x = document.getElementById("toast");
             x.className = "show";
