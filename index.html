@@ -186,6 +186,7 @@
             }
         }
 
+        // یہ والا فنکشن اب براہ راست کلاؤڈ فلیر پیجز کے اسی فولڈر سسٹم کو کال کرے گا جو آپ نے ابھی بنایا ہے
         async function translateText() {
             const inputField = document.getElementById('translateInput');
             const input = inputField.value.trim();
@@ -211,11 +212,10 @@
                 if (data.translatedText) {
                     outputBox.innerText = data.translatedText;
                 } else {
-                    alert("Error: " + (data.error || "Translation failed. Please check worker configuration."));
+                    alert("Error: " + (data.error || "Translation failed. Please ensure Cloudflare deployment is complete."));
                 }
             } catch (error) {
                 alert("Connection error. Please try again.");
-                console.error(error);
             } finally {
                 btn.innerText = "Translate Now";
                 btn.disabled = false;
