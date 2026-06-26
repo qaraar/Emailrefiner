@@ -11,15 +11,8 @@
     <!-- ADVANCED SEO META TAGS -->
     <title>Email Refiner — Master Your Professional Email Communication</title>
     <meta name="description" content="Struggling with email drafting? Use Email Refiner to instantly polish your tone, fix clarity, and master your professional email communication with AI-powered precision.">
-    <meta name="keywords" content="Email Refiner, AI Email Assistant, Professional Email Writing, Business Communication, Polish Email Tone, Language Translator, Groq AI">
-    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Email Refiner, AI Email Assistant, Professional Email Writing, Business Communication, Polish Email Tone">
     
-    <!-- OPEN GRAPH FOR SOCIAL MEDIA (WHATSAPP, FACEBOOK, LINKEDIN) -->
-    <meta property="og:title" content="Email Refiner — Master Your Professional Email Communication">
-    <meta property="og:description" content="Instant AI-powered precision to polish your email tone, improve clarity, and translate multi-language emails instantly.">
-    <meta property="og:image" content="ms-icon-150x150.png">
-    <meta property="og:type" content="website">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <style> 
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;700;800&display=swap');
@@ -40,20 +33,17 @@
 
     <div class="max-w-4xl mx-auto premium-card p-6 md:p-8 rounded-[2rem] relative">
         
-        <!-- TOP NAVIGATION & APP INSTALL BUTTON -->
         <div class="flex justify-between items-center mb-6 border-b pb-4 border-slate-100 flex-wrap gap-3">
             <div class="flex items-center gap-2">
-                <!-- APP LOGO WITH INSTALL BUTTON -->
+                <!-- APP LOGO WITH NATIVE INSTALL BUTTON -->
                 <img src="ms-icon-150x150.png" alt="Logo" class="w-8 h-8 rounded-lg shadow-sm">
                 <button id="installAppBtn" class="hidden py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition-all flex items-center gap-1 shadow-md">
                     📥 Install App
                 </button>
             </div>
-            
-            <div class="flex items-center gap-2 ml-auto">
-                <button id="backToHomeBtn" onclick="showSection('emailSection')" class="hidden py-2 px-4 bg-slate-100 text-slate-700 font-semibold rounded-xl hover:bg-slate-200 transition-all text-sm">← Back to Email Refiner</button>
-                <button id="goTranslatorBtn" onclick="showSection('translatorSection')" class="py-2 px-4 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all text-sm border border-emerald-200">Language Translator →</button>
-            </div>
+            <button id="backToHomeBtn" onclick="showSection('emailSection')" class="hidden py-2 px-4 bg-slate-100 text-slate-700 font-semibold rounded-xl hover:bg-slate-200 transition-all text-sm">← Back to Email Refiner</button>
+            <div class="flex-grow"></div>
+            <button id="goTranslatorBtn" onclick="showSection('translatorSection')" class="py-2 px-4 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all text-sm border border-emerald-200">Language Translator →</button>
         </div>
 
         <!-- ================= EMAIL REFINER SECTION ================= -->
@@ -107,7 +97,7 @@
         <div id="translatorSection" class="hidden">
             <div class="text-center mb-8">
                 <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Language Translator</h1>
-                <p class="text-emerald-700 mt-2 font-medium italic">Instant Multi-Language Translation powered by Groq</p>
+                <p class="text-emerald-700 mt-2 font-medium italic">Instant Multi-Language Translation</p>
             </div>
 
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-100">
@@ -175,13 +165,38 @@
             </div>
         </div>
 
+        <!-- ================= APP FOOTER SECTION ================= -->
+        <div class="mt-8 pt-4 border-t border-slate-100 text-center text-xs text-slate-400 font-medium">
+            <p>© 2026 <a href="https://www.emailrefiner.site" target="_blank" class="text-emerald-700 hover:underline font-bold">www.emailrefiner.site</a> | Support: <span class="text-slate-600 font-semibold">info@emailrefiner.site</span></p>
+        </div>
+
     </div>
 
     <script>
         let currentTone = 'Professional';
         let deferredPrompt;
 
-        // SMART NATIVE APP INSTALL LOGIC (PWA CHROME INTEGRATION)
+        // INLINE MANIFEST GENERATOR FOR 100% PWA WORKING WITHOUT EXTERNAL MANIFEST.JSON
+        const manifestObj = {
+            "name": "Email Refiner",
+            "short_name": "EmailRefiner",
+            "start_url": ".",
+            "display": "standalone",
+            "background_color": "#f8fafc",
+            "theme_color": "#059669",
+            "icons": [
+                { "src": "ms-icon-150x150.png", "sizes": "150x150", "type": "image/png" }
+            ]
+        };
+        const stringManifest = JSON.stringify(manifestObj);
+        const blob = new Blob([stringManifest], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(blob);
+        const manifestLink = document.createElement('link');
+        manifestLink.setAttribute('rel', 'manifest');
+        manifestLink.setAttribute('href', manifestURL);
+        document.head.appendChild(manifestLink);
+
+        // NATIVE APP INSTALL LOGIC
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -196,7 +211,7 @@
                     deferredPrompt.prompt();
                     const { outcome } = await deferredPrompt.userChoice;
                     if (outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
+                        console.log('User accepted installation');
                     }
                     deferredPrompt = null;
                     installBtn.classList.add('hidden');
@@ -205,10 +220,15 @@
         }
 
         window.addEventListener('appinstalled', () => {
-            console.log('App successfully installed!');
             const installBtn = document.getElementById('installAppBtn');
             if(installBtn) installBtn.classList.add('hidden');
         });
+
+        // CHECK IF ALREADY OPENED AS INSTALLED APP
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+            const installBtn = document.getElementById('installAppBtn');
+            if(installBtn) installBtn.classList.add('hidden');
+        }
 
         function showSection(sectionId) {
             if (sectionId === 'translatorSection') {
