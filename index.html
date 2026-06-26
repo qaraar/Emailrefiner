@@ -284,9 +284,7 @@
         let tgtLangName = "🇵🇰 Urdu (اردو)";
         let currentTone = 'Professional';
         let deferredPrompt = null; 
-        let userHasRated = false; 
 
-        // کنفرم ہینڈلر: جیسے ہی براؤزر PWA انسٹالیشن ریڈی کرے گا، اسے یہاں سیو کرے گا
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -298,7 +296,6 @@
             deferredPrompt = null;
         });
 
-        // بٹن پر کلک کرنے سے براؤزر کا آفیشل Install/Cancel (اوکے یا کینسل) پرامپٹ فوری سامنے آئے گا
         function triggerPwaInstall() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
@@ -311,31 +308,49 @@
                     deferredPrompt = null;
                 });
             } else {
-                // اگر پہلے سے انسٹال ہے یا براؤزر سپورٹ نہیں کر رہا تو یہ آپشن دکھائے گا
                 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
                 if (isStandalone) {
                     alert("This application is already successfully installed on your device!");
                 } else {
-                    alert("To install right now, click your browser menu (3 dots or share option) and choose 'Add to Home Screen' or 'Install'.");
+                    alert("App Installation is ready! If the prompt doesn't open instantly, please tap your browser's menu button (three dots at top right) and click 'Install app' or 'Add to Home screen'.");
                 }
             }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             fetchLiveRatingsSummary();
+            checkUserPreviousRating();
         });
+
+        // اگر صارف پہلے ہی ریٹنگ کر چکا ہو تو سٹارز کو پہلے ہی فل (Filled) دکھائیں
+        function checkUserPreviousRating() {
+            const savedRating = localStorage.getItem("user_voted_rating");
+            if(savedRating) {
+                const stars = parseInt(savedRating);
+                const starsArray = document.querySelectorAll('#ratingSection .star');
+                starsArray.forEach((starInstance, index) => {
+                    if (index < stars) {
+                        starInstance.classList.add('filled');
+                    }
+                });
+            }
+        }
 
         async function fetchLiveRatingsSummary() {
             try {
                 const response = await fetch("/api/refine?get_rating=true");
                 const data = await response.json();
-                if(data.avgRating && data.totalReviews) {
-                    document.getElementById('averageRatingText').innerText = `⭐ ${parseFloat(data.avgRating).toFixed(1)} / 5.0 (${data.totalReviews} community reviews)`;
+                
+                let total = data.totalReviews || 0;
+                let avg = data.avgRating || 0;
+
+                if(total > 0) {
+                    document.getElementById('averageRatingText').innerText = `⭐ ${parseFloat(avg).toFixed(1)} / 5.0 (${total} reviews)`;
                 } else {
-                    document.getElementById('averageRatingText').innerText = "⭐ 0.0 / 5.0 (0 community reviews)";
+                    document.getElementById('averageRatingText').innerText = "⭐ 0.0 / 5.0 (0 reviews)";
                 }
             } catch(e) {
-                document.getElementById('averageRatingText').innerText = "⭐ 0.0 / 5.0 (0 community reviews)";
+                document.getElementById('averageRatingText').innerText = "⭐ 0.0 / 5.0 (0 reviews)";
             }
         }
 
@@ -499,16 +514,16 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        prompt: `Translate this text from ${srcLangName} to ${tgtLangName}: ${rawText}`,
+                        prompt: `Task: Translate the text block below from ${srcLangName} into exact ${tgtLangName}.\nStrict Rule: Provide ONLY the final translated text. Do not add conversational intro, markdown labels like (Translation:), explanations, or notes. Your output must contain nothing except the raw translation.\n\nText to translate:\n${rawText}`,
                         tone: "Professional"
                     })
                 });
                 
                 const data = await response.json();
                 if (data.refinedEmail) {
-                    outputElement.innerText = data.refinedEmail;
+                    document.getElementById('transOutput').innerText = data.refinedEmail;
                 } else {
-                    outputElement.innerText = data.error || rawText;
+                    document.getElementById('transOutput').innerText = data.error || rawText;
                 }
                 outputArea.classList.remove('hidden');
                 outputArea.scrollIntoView({ behavior: 'smooth' });
@@ -524,9 +539,10 @@
         }
 
         async function rate(stars) {
-            if(userHasRated) {
+            // اکاؤنٹ/براؤزر کی تصدیق: اگر یہ یوزر پہلے ریٹنگ کر چکا ہے تو اسے روک دے گا
+            if(localStorage.getItem("user_voted_rating")) {
                 const toastBox = document.getElementById("toast");
-                toastBox.innerText = "You have already submitted a rating in this session!";
+                toastBox.innerText = "You have already submitted your rating!";
                 toastBox.className = "show";
                 setTimeout(function(){ toastBox.className = toastBox.className.replace("show", ""); }, 3000);
                 return;
@@ -555,8 +571,10 @@
                     })
                 });
                 await response.json();
-                userHasRated = true; 
-                toastElement.innerText = "Thank you! Rating saved to database.";
+                
+                // ریٹنگ کو لوکل سٹوریج میں مستقل محفوظ کر دیا تاکہ یوزر دوبارہ ووٹ نہ کر سکے
+                localStorage.setItem("user_voted_rating", stars);
+                toastElement.innerText = "Thank you! Rating saved successfully.";
                 fetchLiveRatingsSummary();
             } catch(e) {
                 toastElement.innerText = "Thank you for giving us " + stars + " stars!";
