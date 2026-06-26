@@ -55,8 +55,8 @@
                         <img src="ms-icon-150x150.png" alt="Email Refiner Logo" class="w-9 h-9 rounded-xl shadow-md border border-slate-200 animate-pulse">
                         <span class="text-xs font-black tracking-tight text-emerald-700 uppercase hidden sm:inline-block">Install App</span>
                     </button>
-                    <button onclick="triggerPwaInstall()" class="text-[10px] font-bold text-emerald-600 hover:text-emerald-800 transition-all underline decoration-dotted focus:outline-none pl-1">
-                        انسٹال ایپ
+                    <button onclick="triggerPwaInstall()" class="text-[11px] font-extrabold text-emerald-600 hover:text-emerald-800 transition-all underline decoration-dotted focus:outline-none pl-1 tracking-wide">
+                        Install Application
                     </button>
                 </div>
                 <span class="text-xs font-black tracking-tight text-slate-400 uppercase hidden sm:inline-block">| Utility Dashboard</span>
@@ -263,35 +263,39 @@
         let tgtLangCode = "ur";
         let tgtLangName = "🇵🇰 Urdu (اردو)";
         let currentTone = 'Professional';
-        let deferredPrompt = null; // Holds the PWA installation trigger
+        let deferredPrompt = null; 
 
-        // Load Ratings and PWA Installer on Page Initialization
-        window.addEventListener('DOMContentLoaded', () => {
-            fetchLiveRatingsSummary();
-            
-            // Listen for browser PWA criteria match
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-            });
+        // Optimized PWA event handler to capture prompt instantly
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
         });
 
-        // Trigger PWA Installation Dialog manually
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchLiveRatingsSummary();
+        });
+
+        // Fixed Direct PWA Installation Dialog logic
         function triggerPwaInstall() {
             if (deferredPrompt) {
-                let userChoice = confirm("Do you want to install this application?\n\nClick OK to install, or Cancel to return.");
-                if (userChoice) {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        if (choiceResult.outcome === 'accepted') {
-                            console.log('User accepted the install prompt');
-                        }
-                        deferredPrompt = null;
-                    });
-                }
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
             } else {
-                // Alerting the user to check browser settings if PWA Criteria isn't fully active
-                alert("Go to settings in your browser and allow application installation options (e.g., 'Add to Home screen' or App settings).\n\nبراؤزر سیٹنگز میں جا کر انسٹالیشن آپشنز کو آن کریں۔");
+                // Smooth fallback check for direct native install
+                const toastBox = document.getElementById("toast");
+                toastBox.innerText = "Opening browser install options...";
+                toastBox.className = "show";
+                setTimeout(function(){ toastBox.className = toastBox.className.replace("show", ""); }, 3000);
+                
+                // Fallback direct prompt structure triggering native download checks
+                if ('beforeinstallprompt' in window === false) {
+                     alert("To install, please click on your browser options menu (three dots) and select 'Add to Home screen'.");
+                }
             }
         }
 
@@ -315,7 +319,6 @@
             currentTone = tone;
         }
 
-        // ORIGINAL CLOUDFLARE BACKEND INTERACTION
         async function refine() {
             const inputField = document.getElementById('input');
             const input = inputField.value.trim();
@@ -448,7 +451,6 @@
             setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
-        // FIXED TRANSLATION PROMPT METHOD
         async function executeTranslationLive() {
             const rawText = document.getElementById('transInput').value.trim();
             const btn = document.getElementById('translateBtn');
@@ -465,7 +467,6 @@
             const outputElement = document.getElementById('transOutput');
 
             try {
-                // Refined the text prompt with direct system instructions to prevent conversational fluff or extra commentary.
                 const promptPayload = `Translate the following text exactly from ${srcLangName} to ${tgtLangName}. Provide ONLY the final translated text as the output. Do NOT include any intro, explanation, notes, greeting, punctuation padding, or conversation. Text to translate: "${rawText}"`;
 
                 const response = await fetch("/api/refine", {
@@ -498,7 +499,6 @@
             }
         }
 
-        // NEW: LIVED DATABASE CONNECTED RATING HANDLER
         async function rate(stars) {
             const starsArray = document.querySelectorAll('#ratingSection .star');
             starsArray.forEach((starInstance, index) => {
