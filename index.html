@@ -3,57 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Refiner — AI Pro Assistant</title>
+    <title>Email Refiner — Master Your Professional Email Communication</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
     <style> 
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f0fdf4; }
-        .glass-card { background: rgba(255, 255, 255, 0.9); border: 1px solid #d1fae5; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        .premium-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
+        .emerald-btn { background-color: #059669; color: white; }
         .active-btn { background-color: #065f46 !important; color: white !important; }
-        #preview { max-width: 100%; height: auto; margin-top: 10px; border-radius: 15px; display: none; }
     </style>
 </head>
-<body class="min-h-screen py-6 px-4">
+<body class="py-6 px-4">
 
-    <!-- نیویگیشن -->
-    <nav class="max-w-4xl mx-auto bg-white p-4 rounded-3xl shadow-sm mb-6 flex flex-wrap justify-center items-center gap-4 border border-emerald-100">
-        <a href="index.html" class="font-bold text-emerald-700">Home</a>
-        <a href="about.html">About</a>
+    <nav class="max-w-4xl mx-auto bg-white p-4 rounded-2xl shadow-sm mb-6 flex flex-wrap justify-center gap-4 text-sm font-bold text-slate-600">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
         <a href="mailto:zaara1970@gmail.com">Contact</a>
         <a href="disclaimer.html">Disclaimer</a>
-        <a href="privacy.html">Privacy</a>
-        <button id="installBtn" class="bg-emerald-900 text-white px-4 py-2 rounded-full font-bold text-xs">Install App</button>
+        <a href="privacy.html">Privacy Policy</a>
+        <button id="installBtn" class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold text-xs">Install App</button>
     </nav>
 
-    <!-- زبانیں (Google Translate) -->
-    <div class="max-w-4xl mx-auto mb-4 text-center">
+    <div class="max-w-2xl mx-auto mb-4 text-center">
         <div id="google_translate_element"></div>
     </div>
 
-    <main class="max-w-2xl mx-auto glass-card p-8 rounded-[3rem] shadow-2xl">
-        <h1 class="text-3xl font-extrabold text-center text-emerald-950 mb-6">Email Refiner</h1>
-
-        <!-- امیج پریویو باکس -->
-        <div id="imageBox" class="mb-4 text-center hidden">
-            <img id="preview" src="#" alt="Selected Image">
+    <div class="max-w-2xl mx-auto premium-card p-8 rounded-[2rem]">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
         </div>
 
-        <textarea id="input" class="w-full h-40 p-5 border-2 border-emerald-100 rounded-3xl mb-4 outline-none" placeholder="Paste draft or upload a photo of your email..."></textarea>
-        
-        <div class="mb-6">
-            <label class="block bg-emerald-50 py-4 rounded-2xl border-2 border-dashed border-emerald-300 text-emerald-700 font-bold cursor-pointer text-center">
-                📷 Upload Photo to Refine
-                <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="previewAndProcess(this)">
-            </label>
+        <div class="grid grid-cols-3 gap-3 mb-6">
+            <button onclick="setTone(this, 'Professional')" class="tone-btn active-btn p-3 rounded-xl border font-semibold text-xs">Professional</button>
+            <button onclick="setTone(this, 'Friendly')" class="tone-btn p-3 rounded-xl border font-semibold text-xs">Friendly</button>
+            <button onclick="setTone(this, 'Formal')" class="tone-btn p-3 rounded-xl border font-semibold text-xs">Formal</button>
+            <button onclick="setTone(this, 'Concise')" class="tone-btn p-3 rounded-xl border font-semibold text-xs">Concise</button>
+            <button onclick="setTone(this, 'Creative')" class="tone-btn p-3 rounded-xl border font-semibold text-xs">Creative</button>
+            <button onclick="setTone(this, 'Persuasive')" class="tone-btn p-3 rounded-xl border font-semibold text-xs">Persuasive</button>
         </div>
+
+        <textarea id="input" class="w-full p-5 border-2 border-emerald-100 rounded-2xl mb-4 outline-none focus:ring-2 focus:ring-emerald-500 min-h-[150px]" placeholder="Paste your draft or upload an image..."></textarea>
         
-        <button id="refineBtn" onclick="refine()" class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold text-lg">Refine My Email</button>
+        <label class="block w-full text-center py-3 mb-6 bg-emerald-50 border-2 border-dashed border-emerald-200 rounded-2xl font-bold text-emerald-700 cursor-pointer">
+            📷 Camera / Upload Image
+            <input type="file" accept="image/*" capture="environment" class="hidden" onchange="alert('Image ready for backend processing!')">
+        </label>
+        
+        <button id="refineBtn" onclick="refine()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200">Refine My Email</button>
 
         <div id="outputArea" class="hidden mt-8 border-t pt-6">
-            <div id="output" class="w-full p-6 bg-slate-50 border-2 border-emerald-100 rounded-2xl whitespace-pre-wrap"></div>
+            <div id="output" class="w-full p-6 bg-slate-50 border-2 border-emerald-100 rounded-2xl text-slate-700 whitespace-pre-wrap"></div>
+            <button onclick="copy()" class="mt-4 w-full py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl">Copy to Clipboard</button>
         </div>
-    </main>
+    </div>
 
     <script type="text/javascript">
         function googleTranslateElementInit() {
@@ -63,27 +65,13 @@
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
-        // امیج پروسیسنگ اور OCR
-        async function previewAndProcess(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('preview').src = e.target.result;
-                    document.getElementById('preview').style.display = 'block';
-                    document.getElementById('imageBox').classList.remove('hidden');
-                }
-                reader.readAsDataURL(input.files[0]);
-
-                // OCR عمل
-                const btn = document.getElementById('refineBtn');
-                btn.innerText = "Extracting Text...";
-                const { data: { text } } = await Tesseract.recognize(input.files[0], 'eng');
-                document.getElementById('input').value = text;
-                btn.innerText = "Refine My Email";
-            }
+        let currentTone = 'Professional';
+        function setTone(btn, tone) {
+            document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active-btn'));
+            btn.classList.add('active-btn');
+            currentTone = tone;
         }
 
-        // آپ کا اصل ریفائن فنکشن (کوئی تبدیلی نہیں کی)
         async function refine() {
             const input = document.getElementById('input').value;
             const btn = document.getElementById('refineBtn');
@@ -92,13 +80,21 @@
             const response = await fetch("/api/refine", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ prompt: input })
+                body: JSON.stringify({ prompt: input, tone: currentTone })
             });
             const data = await response.json();
             document.getElementById('output').innerText = data.refinedEmail;
             document.getElementById('outputArea').classList.remove('hidden');
             btn.innerText = "Refine My Email";
         }
-    </script>
+
+        // انسٹال ایپ (Direct Install)
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => { deferredPrompt = e; });
+        document.getElementById('installBtn').addEventListener('click', () => {
+            if(deferredPrompt) deferredPrompt.prompt();
+            else alert("App is already installed or supported browser required.");
+        });
+    </script> 
 </body>
 </html>
