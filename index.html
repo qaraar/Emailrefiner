@@ -25,11 +25,12 @@
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-        .star { cursor: pointer; color: #cbd5e1; transition: color 0.2s; font-size: 28px; }
+        /* اسٹارز کو چھوٹا اور خوبصورت کرنے کے لیے */
+        .star { cursor: pointer; color: #cbd5e1; transition: color 0.2s; font-size: 20px; }
         .star.filled { color: #f59e0b; }
     </style>
 </head>
-<body class="py-10 px-4">
+<body class="py-10 px-4 md:pb-20"> <!-- موبائل ویو میں نیچے اضافی جگہ دی گئی ہے تاکہ بٹن نہ دبے -->
 
     <div id="toast">Copied to clipboard!</div>
 
@@ -42,7 +43,7 @@
         <button onclick="showSection('disclaimerSection')" class="hover:text-emerald-700 transition-all">Disclaimer</button>
     </div>
 
-    <div class="max-w-4xl mx-auto premium-card p-6 md:p-8 rounded-[2rem] relative">
+    <div class="max-w-4xl mx-auto premium-card p-6 md:p-8 rounded-[2rem] relative pb-12">
         
         <div class="flex justify-between items-center mb-6 border-b pb-4 border-slate-100 flex-wrap gap-3">
             <div class="flex items-center gap-2">
@@ -58,22 +59,23 @@
         </div>
 
         <!-- ================= EMAIL REFINER SECTION ================= -->
-        <div id="emailSection">
-            <div class="text-center mb-6">
-                <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
-                <p class="text-emerald-700 mt-2 font-medium italic">Master Your Professional Email Communication</p>
-            </div>
-
-            <!-- 5-STAR RATING SYSTEM -->
-            <div class="mb-8 p-4 bg-slate-50 rounded-2xl border border-slate-100 text-center max-w-sm mx-auto shadow-sm">
-                <p class="text-xs font-bold text-slate-500 mb-1 tracking-wider">RATE OUR SERVICE</p>
-                <div id="star-container" class="flex justify-center gap-1.5">
+        <div id="emailSection" class="relative">
+            
+            <!-- 5-STAR RATING SYSTEM (اب یہ اوپر دائیں کونے میں بالکل چھوٹا اور خوبصورت سا سیٹ ہے) -->
+            <div class="absolute -top-3 right-0 flex items-center gap-1.5 bg-slate-50 py-1 px-3 rounded-full border border-slate-100 shadow-sm z-10 scale-90 sm:scale-100">
+                <span class="text-[10px] font-bold text-slate-400 tracking-wider">RATE:</span>
+                <div id="star-container" class="flex gap-0.5">
                     <span class="star" onclick="rate(1)">★</span>
                     <span class="star" onclick="rate(2)">★</span>
                     <span class="star" onclick="rate(3)">★</span>
                     <span class="star" onclick="rate(4)">★</span>
                     <span class="star" onclick="rate(5)">★</span>
                 </div>
+            </div>
+
+            <div class="text-center mb-6 pt-4 sm:pt-0">
+                <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
+                <p class="text-emerald-700 mt-2 font-medium italic">Master Your Professional Email Communication</p>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
@@ -85,7 +87,8 @@
 
             <textarea id="input" class="w-full p-5 border-2 border-emerald-100 rounded-2xl mb-6 outline-none focus:ring-2 focus:ring-emerald-500 min-h-[150px]" placeholder="Paste your draft email here..."></textarea>
             
-            <button id="refineBtn" onclick="refine()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all">Refine My Email</button>
+            <!-- ریفائن بٹن اب موبائل سکرین کی ہوم بار کے اوپر بالکل صاف نظر آئے گا -->
+            <button id="refineBtn" onclick="refine()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all mb-4">Refine My Email</button>
 
             <div id="outputArea" class="hidden mt-8 border-t pt-6">
                 <div id="output" class="w-full p-6 bg-slate-50 border-2 border-emerald-100 rounded-2xl text-slate-700 leading-relaxed whitespace-pre-wrap"></div>
