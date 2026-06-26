@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Email Refiner — Master Your Professional Email Communication</title>
+    <title>Email Refiner & Language Translator</title>
     <meta name="description" content="Struggling with email drafting? Use Email Refiner to instantly polish your tone, fix clarity, and master your professional email communication with AI-powered precision.">
     <meta name="keywords" content="Email Refiner, AI Email Assistant, Professional Email Writing, Business Communication, Polish Email Tone">
     
@@ -26,31 +26,107 @@
 
     <div id="toast">Copied to clipboard!</div>
 
-    <div class="max-w-2xl mx-auto premium-card p-8 rounded-[2rem]">
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
-            <p class="text-emerald-700 mt-2 font-medium italic">Master Your Professional Email Communication</p>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <button onclick="setTone(this, 'Professional')" class="tone-btn active-btn p-3 rounded-xl border border-emerald-200 font-semibold transition-all">Professional</button>
-            <button onclick="setTone(this, 'Friendly')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Friendly</button>
-            <button onclick="setTone(this, 'Formal')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Formal</button>
-            <button onclick="setTone(this, 'Concise')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Concise</button>
-        </div>
-
-        <textarea id="input" class="w-full p-5 border-2 border-emerald-100 rounded-2xl mb-6 outline-none focus:ring-2 focus:ring-emerald-500 min-h-[150px]" placeholder="Paste your draft email here..."></textarea>
+    <div class="max-w-4xl mx-auto premium-card p-6 md:p-10 rounded-[2rem] relative">
         
-        <button id="refineBtn" onclick="refine()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all">Refine My Email</button>
-
-        <div id="outputArea" class="hidden mt-8 border-t pt-6">
-            <div id="output" class="w-full p-6 bg-slate-50 border-2 border-emerald-100 rounded-2xl text-slate-700 leading-relaxed whitespace-pre-wrap"></div>
-            <button onclick="copy()" class="mt-4 w-full py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all">Copy to Clipboard</button>
+        <div class="flex justify-between items-center mb-6">
+            <button id="backToHomeBtn" onclick="showSection('emailSection')" class="hidden py-2 px-4 bg-slate-100 text-slate-700 font-semibold rounded-xl hover:bg-slate-200 transition-all text-sm">← Back to Email Refiner</button>
+            <div class="flex-grow"></div>
+            <button id="goTranslatorBtn" onclick="showSection('translatorSection')" class="py-2 px-4 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all text-sm border border-emerald-200">Language Translator →</button>
         </div>
+
+        <div id="emailSection">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
+                <p class="text-emerald-700 mt-2 font-medium italic">Master Your Professional Email Communication</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                <button onclick="setTone(this, 'Professional')" class="tone-btn active-btn p-3 rounded-xl border border-emerald-200 font-semibold transition-all">Professional</button>
+                <button onclick="setTone(this, 'Friendly')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Friendly</button>
+                <button onclick="setTone(this, 'Formal')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Formal</button>
+                <button onclick="setTone(this, 'Concise')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Concise</button>
+            </div>
+
+            <textarea id="input" class="w-full p-5 border-2 border-emerald-100 rounded-2xl mb-6 outline-none focus:ring-2 focus:ring-emerald-500 min-h-[150px]" placeholder="Paste your draft email here..."></textarea>
+            
+            <button id="refineBtn" onclick="refine()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all">Refine My Email</button>
+
+            <div id="outputArea" class="hidden mt-8 border-t pt-6">
+                <div id="output" class="w-full p-6 bg-slate-50 border-2 border-emerald-100 rounded-2xl text-slate-700 leading-relaxed whitespace-pre-wrap"></div>
+                <button onclick="copy('output')" class="mt-4 w-full py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all">Copy to Clipboard</button>
+            </div>
+        </div>
+
+        <div id="translatorSection" class="hidden">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Language Translator</h1>
+                <p class="text-emerald-700 mt-2 font-medium italic">Translate any language using Groq AI</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+                <select id="sourceLang" class="w-full sm:w-52 p-3 bg-white border-2 border-emerald-100 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 font-semibold text-slate-700">
+                    <option value="English" selected>English</option>
+                    <option value="Urdu">Urdu</option>
+                    <option value="Arabic">Arabic</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="French">French</option>
+                    <option value="German">German</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Hindi">Hindi</option>
+                </select>
+
+                <button onclick="toggleLanguages()" class="p-3 bg-emerald-50 border border-emerald-200 rounded-full font-bold text-emerald-700 hover:bg-emerald-100 transition-all shadow-sm">
+                    ⇄
+                </button>
+
+                <select id="targetLang" class="w-full sm:w-52 p-3 bg-white border-2 border-emerald-100 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 font-semibold text-slate-700">
+                    <option value="English">English</option>
+                    <option value="Urdu" selected>Urdu</option>
+                    <option value="Arabic">Arabic</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="French">French</option>
+                    <option value="German">German</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Hindi">Hindi</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label class="block text-sm font-bold text-slate-600 mb-2">Source Text</label>
+                    <textarea id="translateInput" class="w-full p-5 border-2 border-emerald-100 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 min-h-[180px]" placeholder="Paste your text here to translate..."></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-600 mb-2">Translation Output</label>
+                    <div id="translateOutput" class="w-full p-5 bg-slate-50 border-2 border-emerald-100 rounded-2xl text-slate-700 min-h-[180px] whitespace-pre-wrap leading-relaxed"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button id="translateBtn" onclick="translateText()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all">Translate Now</button>
+                <button onclick="copy('translateOutput')" class="w-full py-4 bg-emerald-50 text-emerald-700 font-bold rounded-2xl hover:bg-emerald-100 transition-all border border-emerald-200">Copy Translation</button>
+            </div>
+        </div>
+
     </div>
 
     <script>
         let currentTone = 'Professional';
+
+        // Section Toggler
+        function showSection(sectionId) {
+            if (sectionId === 'translatorSection') {
+                document.getElementById('emailSection').classList.add('hidden');
+                document.getElementById('translatorSection').classList.remove('hidden');
+                document.getElementById('goTranslatorBtn').classList.add('hidden');
+                document.getElementById('backToHomeBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('translatorSection').classList.add('hidden');
+                document.getElementById('emailSection').classList.remove('hidden');
+                document.getElementById('backToHomeBtn').classList.add('hidden');
+                document.getElementById('goTranslatorBtn').classList.remove('hidden');
+            }
+        }
 
         function setTone(btn, tone) {
             document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active-btn'));
@@ -58,6 +134,7 @@
             currentTone = tone;
         }
 
+        // Email Refiner API Call
         async function refine() {
             const inputField = document.getElementById('input');
             const input = inputField.value.trim();
@@ -69,7 +146,6 @@
             btn.disabled = true;
 
             try {
-                // یہاں اب ہم ڈائریکٹ Groq پر نہیں جا رہے، بلکہ کلاؤڈ فلیر کے بیک اینڈ فنکشن کو کال کر رہے ہیں
                 const response = await fetch("/api/refine", {
                     method: "POST",
                     headers: {
@@ -87,7 +163,6 @@
                     document.getElementById('output').innerText = data.refinedEmail;
                     document.getElementById('outputArea').classList.remove('hidden');
                 } else {
-                    // اگر بیک اینڈ سے کوئی ایرر آیا تو وہ یہاں نظر آئے گا
                     alert("Error: " + (data.error || "Could not get a response. Please check your API Key."));
                 }
                 
@@ -99,8 +174,62 @@
             }
         }
 
-        function copy() {
-            const text = document.getElementById('output').innerText;
+        // Language Translator API Call (Using Groq API Backend)
+        async function translateText() {
+            const inputField = document.getElementById('translateInput');
+            const input = inputField.value.trim();
+            const sourceLang = document.getElementById('sourceLang').value;
+            const targetLang = document.getElementById('targetLang').value;
+            const btn = document.getElementById('translateBtn');
+
+            if (!input) return;
+
+            btn.innerText = "Translating...";
+            btn.disabled = true;
+
+            try {
+                // یہ کلاؤڈ فلیر ورکر یا آپ کے بیک اینڈ پر ٹرانسلیشن کی اینڈ پوائنٹ کو ہٹ کرے گا جو آگے Groq API استعمال کرے گا
+                const response = await fetch("/api/translate", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        prompt: input,
+                        sourceLang: sourceLang,
+                        targetLang: targetLang
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.translatedText) {
+                    document.getElementById('translateOutput').innerText = data.translatedText;
+                } else {
+                    alert("Error: " + (data.error || "Could not get a translation. Please check your backend setup."));
+                }
+            } catch (error) {
+                alert("Connection error. Please try again.");
+            } finally {
+                btn.innerText = "Translate Now";
+                btn.disabled = false;
+            }
+        }
+
+        // Toggle Language Options (Swap)
+        function toggleLanguages() {
+            const source = document.getElementById('sourceLang');
+            const target = document.getElementById('targetLang');
+            const temp = source.value;
+            source.value = target.value;
+            target.value = temp;
+        }
+
+        // Reusable Copy Function
+        function copy(elementId) {
+            const text = document.getElementById(elementId).innerText || document.getElementById(elementId).value;
+            if(!text) return;
+            
             navigator.clipboard.writeText(text);
             var x = document.getElementById("toast");
             x.className = "show";
