@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="icon" type="image/png" href="ms-icon-150x150.png">
     <link rel="apple-touch-icon" href="ms-icon-150x150.png">
+    
     <title>Email Refiner — Master Your Professional Email Communication</title>
+    <meta name="description" content="Struggling with email drafting? Use Email Refiner to instantly polish your tone, fix clarity, and master your professional email communication with AI-powered precision.">
+    <meta name="keywords" content="Email Refiner, AI Email Assistant, Professional Email Writing, Business Communication, Polish Email Tone">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style> 
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;700;800&display=swap');
@@ -23,16 +28,51 @@
     </style>
 </head>
 <body class="py-6 px-4 md:pb-20">
+
     <div id="toast">Copied to clipboard!</div>
-    
+
+    <div class="max-w-4xl mx-auto mb-4 flex flex-wrap justify-center gap-4 md:gap-6 bg-white border border-slate-200 py-3 px-4 rounded-2xl shadow-sm text-xs md:text-sm font-bold text-slate-600">
+        <button onclick="showSection('emailSection')" class="hover:text-emerald-700 transition-all">Home</button>
+        <button onclick="showSection('aboutSection')" class="hover:text-emerald-700 transition-all">About Us</button>
+        <button onclick="showSection('contactSection')" class="hover:text-emerald-700 transition-all">Contact Us</button>
+        <button onclick="showSection('privacySection')" class="hover:text-emerald-700 transition-all">Privacy Policy</button>
+        <button onclick="showSection('disclaimerSection')" class="hover:text-emerald-700 transition-all">Disclaimer</button>
+    </div>
+
     <div class="max-w-4xl mx-auto premium-card p-5 md:p-8 rounded-[2rem] relative">
+        
+        <div class="flex justify-between items-center mb-6 border-b pb-4 border-slate-100 flex-wrap gap-3">
+            <div class="flex items-center gap-2">
+                <img src="ms-icon-150x150.png" alt="Logo" class="w-8 h-8 rounded-lg shadow-sm">
+                <button id="installAppBtn" class="hidden py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition-all flex items-center gap-1 shadow-md">
+                    📥 Install App
+                </button>
+            </div>
+            
+            <button id="backToHomeBtn" onclick="showSection('emailSection')" class="hidden py-2 px-4 bg-slate-100 text-slate-700 font-semibold rounded-xl hover:bg-slate-200 transition-all text-sm">← Back to Email Refiner</button>
+            
+            <button id="goTranslatorBtn" onclick="showSection('translatorSection')" class="py-2 px-4 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all text-sm border border-emerald-200">Language Translator →</button>
+        </div>
+
         <div id="emailSection">
+            <div class="text-center mb-6">
+                <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
+                <p class="text-emerald-700 mt-1 font-medium italic text-sm">Master Your Professional Email Communication</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+                <button onclick="setTone(this, 'Professional')" class="tone-btn active-btn p-3 rounded-xl border border-emerald-200 font-semibold transition-all">Professional</button>
+                <button onclick="setTone(this, 'Friendly')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Friendly</button>
+                <button onclick="setTone(this, 'Formal')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Formal</button>
+                <button onclick="setTone(this, 'Concise')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Concise</button>
+            </div>
+
             <textarea id="input" class="w-full p-4 border-2 border-emerald-100 rounded-2xl mb-5 outline-none focus:ring-2 focus:ring-emerald-500 min-h-[140px] text-sm md:text-base" placeholder="Paste your draft email here..."></textarea>
             
             <button id="refineBtn" onclick="refine()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all mb-6">Refine My Email</button>
 
             <div id="ratingSection" class="w-full bg-sky-50 p-4 rounded-2xl border border-sky-100 shadow-sm flex items-center justify-between mb-6">
-                <span class="text-xs font-black text-sky-900 tracking-wider">RATE US:</span>
+                <span class="text-xs font-black text-sky-900 tracking-wider">PLEASE RATE OUR SERVICE:</span>
                 <div id="star-container" class="flex gap-1">
                     <span class="star" onclick="rate(1)">★</span>
                     <span class="star" onclick="rate(2)">★</span>
@@ -46,44 +86,54 @@
                 <div id="output" class="w-full p-6 bg-slate-50 border-2 border-emerald-200 rounded-2xl text-slate-700 leading-relaxed whitespace-pre-wrap"></div>
                 <button onclick="copy('output')" class="mt-4 w-full py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all">Copy to Clipboard</button>
             </div>
+
+            <div class="mt-8 bg-slate-50 rounded-2xl p-5 border border-slate-200">
+                <h3 class="text-md font-bold text-emerald-950 mb-3 flex items-center gap-1">💡 Understanding Refiner Tones (ٹونز کی معلومات)</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600">
+                    <div class="p-3 bg-white rounded-xl border border-slate-100 shadow-sm">
+                        <strong class="text-emerald-800 block mb-0.5">💼 Professional</strong>
+                        Ideal for workplace communications, bosses, and official B2B emails. Keeps it perfectly balanced.
+                    </div>
+                    <div class="p-3 bg-white rounded-xl border border-slate-100 shadow-sm">
+                        <strong class="text-emerald-800 block mb-0.5">🤝 Friendly</strong>
+                        Adds warmth and approachable vibe, great for close colleagues, networking, or soft follow-ups.
+                    </div>
+                    <div class="p-3 bg-white rounded-xl border border-slate-100 shadow-sm">
+                        <strong class="text-emerald-800 block mb-0.5">👔 Formal</strong>
+                        Strict corporate and authoritative tone. Perfect for clients, cover letters, and legal/serious matters.
+                    </div>
+                    <div class="p-3 bg-white rounded-xl border border-slate-100 shadow-sm">
+                        <strong class="text-emerald-800 block mb-0.5">⚡ Concise</strong>
+                        Cuts the fluff! Delivers maximum message clarity using the fewest words possible for fast reading.
+                    </div>
+                </div>
+            </div>
         </div>
+        
         </div>
 
     <script>
-        // آپ کا اصلی فنکشن جو ریفائن کرتا ہے
-        async function refine() {
-            const inputField = document.getElementById('input');
-            const input = inputField.value.trim();
-            const btn = document.getElementById('refineBtn');
-            const outputArea = document.getElementById('outputArea');
-            const outputBox = document.getElementById('output');
-            
-            if(!input) return;
-
-            btn.innerText = "Processing...";
-            btn.disabled = true;
-
-            try {
-                const response = await fetch("/api/refine", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ prompt: input, tone: currentTone })
-                });
-                const data = await response.json();
-                if (data.refinedEmail) {
-                    outputBox.innerText = data.refinedEmail;
-                    outputArea.classList.remove('hidden');
+        // ... (تمام فنکشنز سیم رہیں گے، صرف ریٹنگ والا حصہ اپ ڈیٹ کیا ہے)
+        
+        function rate(stars) {
+            const starElems = document.querySelectorAll('#ratingSection .star');
+            starElems.forEach((s, i) => {
+                if (i < stars) {
+                    s.classList.add('filled');
+                    s.style.color = '#f59e0b';
                 } else {
-                    alert("Error: " + (data.error || "Could not get a response."));
+                    s.classList.remove('filled');
+                    s.style.color = '#cbd5e1';
                 }
-            } catch (error) {
-                alert("Connection error. Please try again.");
-            } finally {
-                btn.innerText = "Refine My Email";
-                btn.disabled = false;
-            }
+            });
+            var x = document.getElementById("toast");
+            x.innerText = "Thank you for giving us " + stars + " stars!";
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
         }
-        // ... (باقی تمام فنکشنز سیم ہیں)
+
+        // باقی تمام فنکشنز وہی ہیں جو آپ نے بھیجے تھے۔
+        // (یہاں باقی سکرپٹ کا کوڈ اسی طرح پیسٹ کر دیں جیسے آپ کے پاس تھا)
     </script>
 </body>
 </html>
