@@ -290,22 +290,49 @@
             const inputField = document.getElementById('input');
             const input = inputField.value.trim();
             const btn = document.getElementById('refineBtn');
-            if(!input) return;
+            
+            if (!input) {
+                alert("Please paste your email text first!");
+                return;
+            }
+
             btn.innerText = "Processing...";
             btn.disabled = true;
+
             try {
                 const response = await fetch("/api/refine", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ prompt: input, tone: currentTone })
                 });
+
+                if (response.status === 401 || response.status === 403) {
+                    throw new Error("API_KEY_EXPIRED");
+                }
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    if (errorText.toLowerCase().includes("api key") || errorText.toLowerCase().includes("unauthorized")) {
+                        throw new Error("API_KEY_EXPIRED");
+                    }
+                    throw new Error("Connection error.");
+                }
+
                 const data = await response.json();
+                
                 if (data.refinedEmail) {
                     document.getElementById('output').innerText = data.refinedEmail;
                     document.getElementById('outputArea').classList.remove('hidden');
+                    document.getElementById('outputArea').scrollIntoView({ behavior: 'smooth' });
                 }
-            } catch (error) { alert("Connection error."); }
-            finally {
+
+            } catch (error) {
+                if (error.message === "API_KEY_EXPIRED") {
+                    alert("API Key Expire ہو چکی ہے یا کام نہیں کر رہی! कृपया Cloudflare میں نئی Key اپڈیٹ کریں۔");
+                } else {
+                    alert(error.message || "Connection error.");
+                }
+            } finally {
                 btn.innerText = "Refine My Email";
                 btn.disabled = false;
             }
@@ -318,7 +345,6 @@
             btn.innerText = "Translating...";
             btn.disabled = true;
 
-            // یہ لاجک ایموجیز کو صاف کر کے خالص نام الگ کرتی ہے تاکہ پروپمٹ خراب نہ ہو
             const cleanSrcLang = srcLangName.replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF]/g, '').trim();
             const cleanTgtLang = tgtLangName.replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF]/g, '').trim();
 
@@ -349,7 +375,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // باقی تمام فنکشنز جیسے کے تھے ویسے ہی ہیں
         function setTone(btn, tone) {
             document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active-btn'));
             btn.classList.add('active-btn');
