@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- FAVICON CONFIGURATION -->
     <link rel="icon" type="image/png" href="ms-icon-150x150.png">
     <link rel="apple-touch-icon" href="ms-icon-150x150.png">
     
-    <!-- ADVANCED SEO META TAGS -->
     <title>Email Refiner — Master Your Professional Email Communication</title>
     <meta name="description" content="Struggling with email drafting? Use Email Refiner to instantly polish your tone, fix clarity, and master your professional email communication with AI-powered precision.">
     <meta name="keywords" content="Email Refiner, AI Email Assistant, Professional Email Writing, Business Communication, Polish Email Tone">
@@ -31,11 +29,16 @@
 
     <div id="toast">Copied to clipboard!</div>
 
+    <div class="max-w-4xl mx-auto mb-4 flex justify-center gap-6 bg-white border border-slate-200 py-3 px-6 rounded-2xl shadow-sm text-sm font-bold text-slate-600">
+        <button onclick="showSection('emailSection')" class="hover:text-emerald-700 transition-all">Home</button>
+        <button onclick="showSection('aboutSection')" class="hover:text-emerald-700 transition-all">About Us</button>
+        <button onclick="showSection('contactSection')" class="hover:text-emerald-700 transition-all">Contact Us</button>
+    </div>
+
     <div class="max-w-4xl mx-auto premium-card p-6 md:p-8 rounded-[2rem] relative">
         
         <div class="flex justify-between items-center mb-6 border-b pb-4 border-slate-100 flex-wrap gap-3">
             <div class="flex items-center gap-2">
-                <!-- APP LOGO WITH NATIVE INSTALL BUTTON -->
                 <img src="ms-icon-150x150.png" alt="Logo" class="w-8 h-8 rounded-lg shadow-sm">
                 <button id="installAppBtn" class="hidden py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition-all flex items-center gap-1 shadow-md">
                     📥 Install App
@@ -46,7 +49,6 @@
             <button id="goTranslatorBtn" onclick="showSection('translatorSection')" class="py-2 px-4 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all text-sm border border-emerald-200">Language Translator →</button>
         </div>
 
-        <!-- ================= EMAIL REFINER SECTION ================= -->
         <div id="emailSection">
             <div class="text-center mb-8">
                 <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
@@ -69,7 +71,6 @@
                 <button onclick="copy('output')" class="mt-4 w-full py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all">Copy to Clipboard</button>
             </div>
 
-            <!-- TONAL EXPLANATION SECTION (FEATURES INFO) -->
             <div class="mt-12 bg-slate-50 rounded-2xl p-5 border border-slate-200">
                 <h3 class="text-md font-bold text-emerald-950 mb-3 flex items-center gap-1">💡 Understanding Refiner Tones (ٹونز کی معلومات)</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600">
@@ -93,7 +94,6 @@
             </div>
         </div>
 
-        <!-- ================= LANGUAGE TRANSLATOR SECTION ================= -->
         <div id="translatorSection" class="hidden">
             <div class="text-center mb-8">
                 <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Language Translator</h1>
@@ -165,9 +165,39 @@
             </div>
         </div>
 
-        <!-- ================= APP FOOTER SECTION ================= -->
+        <div id="aboutSection" class="hidden">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">About Us</h1>
+                <p class="text-emerald-700 mt-2 font-medium italic">Empowering Professional Communication Worldwide</p>
+            </div>
+            <div class="text-slate-600 leading-relaxed space-y-4 text-sm md:text-base max-w-2xl mx-auto">
+                <p>Welcome to <strong>Email Refiner</strong>, your ultimate companion for mastering professional digital communication. Our mission is to bridge the gap between drafting complex thoughts and delivering clean, impactful messages with total linguistic confidence.</p>
+                <p>Powered by advanced artificial intelligence, our tool intelligently analyzes your raw drafts and instantly restructures the sentence flow, refines grammar, and polishes vocabulary across distinct tones like Professional, Formal, Friendly, and Concise. Alongside email optimization, our integrated system offers a native Multi-Language Translator to seamlessly convert text without losing context.</p>
+                <p>Whether you are a corporate executive, an entrepreneur, or a student stepping into the professional sphere, Email Refiner ensures that your voice remains articulate, persuasive, and globally respected.</p>
+            </div>
+        </div>
+
+        <div id="contactSection" class="hidden">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Contact Us</h1>
+                <p class="text-emerald-700 mt-2 font-medium italic">We would love to hear from you</p>
+            </div>
+            <div class="text-center space-y-6 max-w-xl mx-auto">
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed">Have questions, feedback, feature requests, or business inquiries regarding <strong>Email Refiner</strong>? Please reach out directly through our official operational support email below. Our support team typically responds within 24–48 hours.</p>
+                <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 inline-block px-8 shadow-sm">
+                    <span class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">Official Support Email</span>
+                    <a href="mailto:info@emailrefiner.site" class="text-lg font-bold text-emerald-950 hover:text-emerald-700 transition-all">info@emailrefiner.site</a>
+                </div>
+            </div>
+        </div>
+
         <div class="mt-8 pt-4 border-t border-slate-100 text-center text-xs text-slate-400 font-medium">
             <p>© 2026 <a href="https://www.emailrefiner.site" target="_blank" class="text-emerald-700 hover:underline font-bold">www.emailrefiner.site</a> | Support: <span class="text-slate-600 font-semibold">info@emailrefiner.site</span></p>
+            <div class="mt-2 flex justify-center gap-4 text-slate-400 font-semibold">
+                <button onclick="showSection('emailSection')" class="hover:text-emerald-700">Home</button>
+                <button onclick="showSection('aboutSection')" class="hover:text-emerald-700">About Us</button>
+                <button onclick="showSection('contactSection')" class="hover:text-emerald-700">Contact Us</button>
+            </div>
         </div>
 
     </div>
@@ -230,18 +260,30 @@
             if(installBtn) installBtn.classList.add('hidden');
         }
 
+        // SMART SINGLE PAGE NAVIGATION CONTROLLER
         function showSection(sectionId) {
+            // Hide all main pages/sections first
+            document.getElementById('emailSection').classList.add('hidden');
+            document.getElementById('translatorSection').classList.add('hidden');
+            document.getElementById('aboutSection').classList.add('hidden');
+            document.getElementById('contactSection').classList.add('hidden');
+            
+            // Show requested section
+            document.getElementById(sectionId).classList.remove('hidden');
+
+            // Top right navigation triggers handler
             if (sectionId === 'translatorSection') {
-                document.getElementById('emailSection').classList.add('hidden');
-                document.getElementById('translatorSection').classList.remove('hidden');
                 document.getElementById('goTranslatorBtn').classList.add('hidden');
                 document.getElementById('backToHomeBtn').classList.remove('hidden');
-            } else {
-                document.getElementById('translatorSection').classList.add('hidden');
-                document.getElementById('emailSection').classList.remove('hidden');
+            } else if (sectionId === 'emailSection') {
                 document.getElementById('backToHomeBtn').classList.add('hidden');
                 document.getElementById('goTranslatorBtn').classList.remove('hidden');
+            } else {
+                // If on About or Contact page
+                document.getElementById('goTranslatorBtn').classList.add('hidden');
+                document.getElementById('backToHomeBtn').classList.remove('hidden');
             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function setTone(btn, tone) {
