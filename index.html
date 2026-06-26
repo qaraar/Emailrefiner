@@ -3,55 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Email Refiner — Master Your Professional Email Communication</title>
-    <meta name="description" content="Struggling with email drafting? Use Email Refiner to instantly polish your tone, fix clarity, and master your professional email communication with AI-powered precision.">
-    <meta name="keywords" content="Email Refiner, AI Email Assistant, Professional Email Writing, Business Communication, Polish Email Tone">
-    
+    <title>Email Refiner — The Ultimate AI Writing Assistant</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style> 
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-        .premium-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
-        .emerald-btn { background-color: #059669; color: white; }
-        .emerald-btn:hover { background-color: #047857; }
-        .active-btn { background-color: #065f46 !important; color: white !important; }
-        #toast { visibility: hidden; min-width: 200px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 1; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 14px; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f0fdf4; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid #d1fae5; }
+        .active-btn { background-color: #065f46 !important; color: white !important; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3); }
+        .nav-link { transition: all 0.3s ease; }
+        .nav-link:hover { color: #059669; }
+        #toast { visibility: hidden; min-width: 200px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 1000; bottom: 30px; left: 50%; transform: translateX(-50%); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
-<body class="py-10 px-4">
+<body class="min-h-screen py-6 px-4">
 
     <div id="toast">Copied to clipboard!</div>
 
-    <div class="max-w-2xl mx-auto premium-card p-8 rounded-[2rem]">
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
-            <p class="text-emerald-700 mt-2 font-medium italic">Master Your Professional Email Communication</p>
+    <nav class="max-w-4xl mx-auto bg-white/80 backdrop-blur-md p-4 rounded-3xl shadow-sm mb-8 flex flex-wrap justify-center items-center gap-4 border border-emerald-100">
+        <a href="#" class="nav-link font-bold">Home</a>
+        <a href="#" class="nav-link">About</a>
+        <a href="mailto:zaara1970@gmail.com" class="nav-link">Contact</a>
+        <a href="#" class="nav-link">Disclaimer</a>
+        <a href="#" class="nav-link">Privacy</a>
+        <button id="installBtn" class="bg-emerald-900 text-white px-5 py-2 rounded-full font-bold text-xs hover:bg-emerald-700 transition-all">Install App</button>
+    </nav>
+
+    <main class="max-w-2xl mx-auto glass-card p-8 rounded-[3rem] shadow-2xl">
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-extrabold text-emerald-950 tracking-tight">Email Refiner</h1>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <button onclick="setTone(this, 'Professional')" class="tone-btn active-btn p-3 rounded-xl border border-emerald-200 font-semibold transition-all">Professional</button>
-            <button onclick="setTone(this, 'Friendly')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Friendly</button>
-            <button onclick="setTone(this, 'Formal')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Formal</button>
-            <button onclick="setTone(this, 'Concise')" class="tone-btn p-3 rounded-xl border border-emerald-200 font-semibold hover:border-emerald-600 transition-all">Concise</button>
+        <!-- لینگویج سلیکٹر -->
+        <select id="langSelect" class="w-full mb-6 p-3 rounded-2xl border-2 border-emerald-100 font-bold text-emerald-800 outline-none focus:ring-2 focus:ring-emerald-500">
+            <option value="English">English</option>
+            <option value="Spanish">Spanish (Español)</option>
+            <option value="French">French (Français)</option>
+            <option value="German">German (Deutsch)</option>
+            <option value="Urdu">Urdu (اردو)</option>
+            <option value="Arabic">Arabic (العربية)</option>
+            <option value="Hindi">Hindi (हिन्दी)</option>
+            <option value="Chinese">Chinese (中文)</option>
+            <option value="Japanese">Japanese (日本語)</option>
+            <option value="Russian">Russian (Русский)</option>
+            <option value="Portuguese">Portuguese (Português)</option>
+            <option value="Italian">Italian (Italiano)</option>
+            <option value="Korean">Korean (한국어)</option>
+            <option value="Turkish">Turkish (Türkçe)</option>
+            <option value="Dutch">Dutch (Nederlands)</option>
+        </select>
+
+        <div class="grid grid-cols-3 gap-2 mb-6">
+            <button onclick="setTone(this, 'Professional')" class="tone-btn active-btn p-3 rounded-2xl border font-bold text-xs transition-all border-emerald-200">Professional</button>
+            <button onclick="setTone(this, 'Friendly')" class="tone-btn p-3 rounded-2xl border font-bold text-xs transition-all border-emerald-200 hover:bg-emerald-50">Friendly</button>
+            <button onclick="setTone(this, 'Formal')" class="tone-btn p-3 rounded-2xl border font-bold text-xs transition-all border-emerald-200 hover:bg-emerald-50">Formal</button>
+            <button onclick="setTone(this, 'Concise')" class="tone-btn p-3 rounded-2xl border font-bold text-xs transition-all border-emerald-200 hover:bg-emerald-50">Concise</button>
+            <button onclick="setTone(this, 'Creative')" class="tone-btn p-3 rounded-2xl border font-bold text-xs transition-all border-emerald-200 hover:bg-emerald-50">Creative</button>
+            <button onclick="setTone(this, 'Persuasive')" class="tone-btn p-3 rounded-2xl border font-bold text-xs transition-all border-emerald-200 hover:bg-emerald-50">Persuasive</button>
         </div>
 
-        <textarea id="input" class="w-full p-5 border-2 border-emerald-100 rounded-2xl mb-6 outline-none focus:ring-2 focus:ring-emerald-500 min-h-[150px]" placeholder="Paste your draft email here..."></textarea>
+        <textarea id="input" class="w-full h-40 p-5 border-2 border-emerald-100 rounded-3xl mb-4 outline-none focus:ring-4 focus:ring-emerald-100 bg-white" placeholder="Paste your draft email here..."></textarea>
         
-        <button id="refineBtn" onclick="refine()" class="w-full emerald-btn py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all">Refine My Email</button>
+        <div class="flex gap-2 mb-6">
+            <label class="flex-1 flex justify-center items-center gap-2 bg-emerald-50 py-3 rounded-2xl border-2 border-dashed border-emerald-300 text-emerald-700 font-bold cursor-pointer hover:bg-emerald-100 transition-all">
+                📷 Capture or Upload
+                <input type="file" accept="image/*" class="hidden">
+            </label>
+        </div>
+        
+        <button id="refineBtn" onclick="refine()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all">Refine My Email</button>
 
         <div id="outputArea" class="hidden mt-8 border-t pt-6">
             <div id="output" class="w-full p-6 bg-slate-50 border-2 border-emerald-100 rounded-2xl text-slate-700 leading-relaxed whitespace-pre-wrap"></div>
             <button onclick="copy()" class="mt-4 w-full py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all">Copy to Clipboard</button>
         </div>
-    </div>
+    </main>
 
     <script>
         let currentTone = 'Professional';
-
+        
         function setTone(btn, tone) {
             document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active-btn'));
             btn.classList.add('active-btn');
@@ -60,43 +92,25 @@
 
         async function refine() {
             const inputField = document.getElementById('input');
+            const lang = document.getElementById('langSelect').value;
             const input = inputField.value.trim();
             const btn = document.getElementById('refineBtn');
-            
             if(!input) return;
-
             btn.innerText = "Processing...";
             btn.disabled = true;
-
             try {
-                // یہاں اب ہم ڈائریکٹ Groq پر نہیں جا رہے، بلکہ کلاؤڈ فلیر کے بیک اینڈ فنکشن کو کال کر رہے ہیں
                 const response = await fetch("/api/refine", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        prompt: input,
-                        tone: currentTone
-                    })
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt: input, tone: currentTone, language: lang })
                 });
-                
                 const data = await response.json();
-                
                 if (data.refinedEmail) {
                     document.getElementById('output').innerText = data.refinedEmail;
                     document.getElementById('outputArea').classList.remove('hidden');
-                } else {
-                    // اگر بیک اینڈ سے کوئی ایرر آیا تو وہ یہاں نظر آئے گا
-                    alert("Error: " + (data.error || "Could not get a response. Please check your API Key."));
-                }
-                
-            } catch (error) {
-                alert("Connection error. Please try again.");
-            } finally {
-                btn.innerText = "Refine My Email";
-                btn.disabled = false;
-            }
+                } else { alert("Error: " + (data.error || "Could not get a response.")); }
+            } catch (error) { alert("Connection error. Please try again."); } 
+            finally { btn.innerText = "Refine My Email"; btn.disabled = false; }
         }
 
         function copy() {
@@ -106,6 +120,14 @@
             x.className = "show";
             setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
         }
+
+        // PWA Install logic
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => { deferredPrompt = e; });
+        document.getElementById('installBtn').addEventListener('click', () => {
+            if (deferredPrompt) { deferredPrompt.prompt(); } 
+            else { alert("To install, please go to your browser settings and select 'Add to Home Screen'."); }
+        });
     </script> 
 </body>
 </html>
