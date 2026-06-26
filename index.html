@@ -33,6 +33,15 @@
         .lang-modal { display: none; position: absolute; z-index: 100; background: white; border: 1px solid #e2e8f0; border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); width: 280px; }
         .lang-list-container { max-height: 200px; overflow-y: auto; scroll-behavior: smooth; }
     </style>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration Failed', err));
+            });
+        }
+    </script>
 </head>
 <body class="py-2 px-3 md:py-4 md:px-4 md:pb-16">
 
