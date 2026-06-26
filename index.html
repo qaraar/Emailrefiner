@@ -25,6 +25,8 @@
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+        .star { cursor: pointer; color: #cbd5e1; transition: color 0.2s; font-size: 28px; }
+        .star.filled { color: #f59e0b; }
     </style>
 </head>
 <body class="py-10 px-4">
@@ -57,9 +59,21 @@
 
         <!-- ================= EMAIL REFINER SECTION ================= -->
         <div id="emailSection">
-            <div class="text-center mb-8">
+            <div class="text-center mb-6">
                 <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
                 <p class="text-emerald-700 mt-2 font-medium italic">Master Your Professional Email Communication</p>
+            </div>
+
+            <!-- 5-STAR RATING SYSTEM -->
+            <div class="mb-8 p-4 bg-slate-50 rounded-2xl border border-slate-100 text-center max-w-sm mx-auto shadow-sm">
+                <p class="text-xs font-bold text-slate-500 mb-1 tracking-wider">RATE OUR SERVICE</p>
+                <div id="star-container" class="flex justify-center gap-1.5">
+                    <span class="star" onclick="rate(1)">★</span>
+                    <span class="star" onclick="rate(2)">★</span>
+                    <span class="star" onclick="rate(3)">★</span>
+                    <span class="star" onclick="rate(4)">★</span>
+                    <span class="star" onclick="rate(5)">★</span>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
@@ -78,7 +92,7 @@
                 <button onclick="copy('output')" class="mt-4 w-full py-3 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all">Copy to Clipboard</button>
             </div>
 
-            <!-- TONAL EXPLANATION SECTION (FEATURES INFO) -->
+            <!-- TONAL EXPLANATION SECTION -->
             <div class="mt-12 bg-slate-50 rounded-2xl p-5 border border-slate-200">
                 <h3 class="text-md font-bold text-emerald-950 mb-3 flex items-center gap-1">💡 Understanding Refiner Tones (ٹونز کی معلومات)</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600">
@@ -197,7 +211,7 @@
                 <p class="text-slate-600 text-sm md:text-base leading-relaxed">Have questions, feedback, feature requests, or business inquiries regarding <strong>Email Refiner</strong>? Please reach out directly through our official operational support email below. Our support team typically responds within 24–48 hours.</p>
                 <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 inline-block px-8 shadow-sm">
                     <span class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">Official Support Email</span>
-                    <a href="mailto:info@emailrefiner.site" class="text-lg font-bold text-emerald-950 hover:text-emerald-700 transition-all">info@emailrefiner.site</a>
+                    <a href="mailto:zaraar1970@gmail.com" class="text-lg font-bold text-emerald-950 hover:text-emerald-700 transition-all">zaraar1970@gmail.com</a>
                 </div>
             </div>
         </div>
@@ -234,7 +248,7 @@
 
         <!-- ================= APP FOOTER SECTION ================= -->
         <div class="mt-8 pt-4 border-t border-slate-100 text-center text-xs text-slate-400 font-medium">
-            <p>© 2026 <button onclick="showSection('emailSection')" class="text-emerald-700 hover:underline font-bold">www.emailrefiner.site</button> | Support: <span class="text-slate-600 font-semibold">info@emailrefiner.site</span></p>
+            <p>© 2026 <button onclick="showSection('emailSection')" class="text-emerald-700 hover:underline font-bold">www.emailrefiner.site</button> | Support: <a href="mailto:zaraar1970@gmail.com" class="text-slate-600 font-semibold hover:text-emerald-700">zaraar1970@gmail.com</a></p>
             <div class="mt-2 flex flex-wrap justify-center gap-4 text-slate-400 font-semibold">
                 <button onclick="showSection('emailSection')" class="hover:text-emerald-700">Home</button>
                 <button onclick="showSection('aboutSection')" class="hover:text-emerald-700">About Us</button>
@@ -250,7 +264,7 @@
         let currentTone = 'Professional';
         let deferredPrompt;
 
-        // INLINE MANIFEST GENERATOR FOR 100% PWA WORKING WITHOUT EXTERNAL MANIFEST.JSON
+        // INLINE MANIFEST GENERATOR FOR PWA WORKING
         const manifestObj = {
             "name": "Email Refiner",
             "short_name": "EmailRefiner",
@@ -284,29 +298,30 @@
                 if (deferredPrompt) {
                     deferredPrompt.prompt();
                     const { outcome } = await deferredPrompt.userChoice;
-                    if (outcome === 'accepted') {
-                        console.log('User accepted installation');
-                    }
                     deferredPrompt = null;
                     installBtn.classList.add('hidden');
                 }
             });
         }
 
-        window.addEventListener('appinstalled', () => {
-            const installBtn = document.getElementById('installAppBtn');
-            if(installBtn) installBtn.classList.add('hidden');
-        });
-
-        // CHECK IF ALREADY OPENED AS INSTALLED APP
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-            const installBtn = document.getElementById('installAppBtn');
-            if(installBtn) installBtn.classList.add('hidden');
+        // RATING SYSTEM JAVASCRIPT LOGIC
+        function rate(stars) {
+            const starElems = document.querySelectorAll('.star');
+            starElems.forEach((s, i) => {
+                if (i < stars) {
+                    s.classList.add('filled');
+                } else {
+                    s.classList.remove('filled');
+                }
+            });
+            var x = document.getElementById("toast");
+            x.innerText = "Thank you for giving us " + stars + " stars!";
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
         }
 
         // SMART SINGLE PAGE NAVIGATION CONTROLLER
         function showSection(sectionId) {
-            // Hide all main pages/sections first
             document.getElementById('emailSection').classList.add('hidden');
             document.getElementById('translatorSection').classList.add('hidden');
             document.getElementById('aboutSection').classList.add('hidden');
@@ -314,10 +329,8 @@
             document.getElementById('privacySection').classList.add('hidden');
             document.getElementById('disclaimerSection').classList.add('hidden');
             
-            // Show requested section
             document.getElementById(sectionId).classList.remove('hidden');
 
-            // Top right navigation triggers handler
             if (sectionId === 'translatorSection') {
                 document.getElementById('goTranslatorBtn').classList.add('hidden');
                 document.getElementById('backToHomeBtn').classList.remove('hidden');
@@ -325,7 +338,6 @@
                 document.getElementById('backToHomeBtn').classList.add('hidden');
                 document.getElementById('goTranslatorBtn').classList.remove('hidden');
             } else {
-                // If on About, Contact, Privacy or Disclaimer page
                 document.getElementById('goTranslatorBtn').classList.add('hidden');
                 document.getElementById('backToHomeBtn').classList.remove('hidden');
             }
@@ -396,7 +408,7 @@
                 if (data.translatedText) {
                     outputBox.innerText = data.translatedText;
                 } else {
-                    alert("Error: " + (data.error || "Translation failed. Please ensure Cloudflare deployment is complete."));
+                    alert("Error: " + (data.error || "Translation failed."));
                 }
             } catch (error) {
                 alert("Connection error. Please try again.");
@@ -419,6 +431,7 @@
             if(!text) return;
             navigator.clipboard.writeText(text);
             var x = document.getElementById("toast");
+            x.innerText = "Copied to clipboard!";
             x.className = "show";
             setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
         }
