@@ -51,11 +51,17 @@
         
         <div class="flex justify-between items-center mb-6 border-b pb-4 border-slate-100 flex-wrap gap-3">
             <div class="flex items-center gap-2">
-                <!-- App Logo Clickable to Trigger Install Prompt -->
-                <button id="pwaInstallBtn" onclick="triggerPwaInstall()" class="flex items-center gap-2 hover:opacity-80 transition-all focus:outline-none">
-                    <img src="ms-icon-150x150.png" alt="Email Refiner Logo" class="w-9 h-9 rounded-xl shadow-md border border-slate-200 animate-pulse">
-                    <span class="text-xs font-black tracking-tight text-emerald-700 uppercase hidden sm:inline-block">Install App</span>
-                </button>
+                <!-- App Logo & Beautiful Sub-Text for Installation -->
+                <div class="flex flex-col items-center sm:items-start gap-0.5">
+                    <button id="pwaInstallBtn" onclick="triggerPwaInstall()" class="flex items-center gap-2 hover:opacity-80 transition-all focus:outline-none">
+                        <img src="ms-icon-150x150.png" alt="Email Refiner Logo" class="w-9 h-9 rounded-xl shadow-md border border-slate-200 animate-pulse">
+                        <span class="text-xs font-black tracking-tight text-emerald-700 uppercase hidden sm:inline-block">Install App</span>
+                    </button>
+                    <!-- Beautiful Install Application Sub-text Link underneath the Icon -->
+                    <button onclick="triggerPwaInstall()" class="text-[10px] font-bold text-emerald-600 hover:text-emerald-800 transition-all underline decoration-dotted focus:outline-none pl-1">
+                        انسٹال ایپلیکیشن
+                    </button>
+                </div>
                 <span class="text-xs font-black tracking-tight text-slate-400 uppercase hidden sm:inline-block">| Utility Dashboard</span>
             </div>
             
@@ -287,7 +293,8 @@
                     });
                 }
             } else {
-                alert("Go to browser setting and allow installation options.\n\nClick OK to acknowledge.");
+                // Modified: Alerting the user to check browser settings if PWA Criteria isn't fully active
+                alert("Go to settings in your browser and allow application installation options (e.g., 'Add to Home screen' or App settings).\n\nبوسر سیٹنگز میں جا کر انسٹالیشن آپشنز کو آن کریں۔");
             }
         }
 
@@ -444,6 +451,7 @@
             setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
+        // FIXED TRANSLATION PROMPT METHOD
         async function executeTranslationLive() {
             const rawText = document.getElementById('transInput').value.trim();
             const btn = document.getElementById('translateBtn');
@@ -460,13 +468,16 @@
             const outputElement = document.getElementById('transOutput');
 
             try {
+                // FIXED: Refined the text prompt with direct system instructions to prevent conversational fluff or extra commentary.
+                const promptPayload = `Translate the following text exactly from ${srcLangName} to ${tgtLangName}. Provide ONLY the final translated text as the output. Do NOT include any intro, explanation, notes, greeting, punctuation padding, or conversation. Text to translate: "${rawText}"`;
+
                 const response = await fetch("/api/refine", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        prompt: `Translate this text from ${srcLangName} to ${tgtLangName}: ${rawText}`,
+                        prompt: promptPayload,
                         tone: "Professional"
                     })
                 });
