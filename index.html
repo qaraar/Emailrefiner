@@ -26,7 +26,7 @@
 
     <div id="toast">Copied to clipboard!</div>
 
-    <!-- MAIN CONTAINER (پروفیشنل فٹنگ کے لیے مکس وڈتھ بڑھا دی گئی ہے) -->
+    <!-- MAIN CONTAINER (پورے ڈبے کے اندر فٹنگ پرفیکٹ کر دی گئی ہے) -->
     <div class="max-w-4xl mx-auto premium-card p-6 md:p-8 rounded-[2rem] relative">
         
         <!-- TOP NAVIGATION BUTTONS -->
@@ -36,7 +36,7 @@
             <button id="goTranslatorBtn" onclick="showSection('translatorSection')" class="py-2 px-4 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all text-sm border border-emerald-200">Language Translator →</button>
         </div>
 
-        <!-- ================= EMAIL REFINER SECTION (پرانا لے آؤٹ اور فیچرز) ================= -->
+        <!-- ================= EMAIL REFINER SECTION ================= -->
         <div id="emailSection">
             <div class="text-center mb-8">
                 <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <!-- ================= LANGUAGE TRANSLATOR SECTION (نیا 100% ورکنگ سیکشن) ================= -->
+        <!-- ================= LANGUAGE TRANSLATOR SECTION ================= -->
         <div id="translatorSection" class="hidden">
             <div class="text-center mb-8">
                 <h1 class="text-4xl font-extrabold text-emerald-950 tracking-tighter">Language Translator</h1>
@@ -138,9 +138,6 @@
     </div>
 
     <script>
-        // اپنی Groq API کی کلید (Key) یہاں نیچے لکھیں
-        const GROQ_API_KEY = "YOUR_GROQ_API_KEY_HERE"; 
-        
         let currentTone = 'Professional';
 
         // Section Toggler (Navigation)
@@ -164,11 +161,13 @@
             currentTone = tone;
         }
 
-        // Email Refiner (پرانا فنکشن چونکہ کلاؤڈ فلیر ورکر پر کام کر رہا تھا، اسے ویسے ہی رکھا ہے)
+        // Email Refiner Backend Call (آپ کا پرانا لاجک، جو کلاؤڈ فلیر ورکر کو کال کرتا ہے)
         async function refine() {
             const inputField = document.getElementById('input');
             const input = inputField.value.trim();
             const btn = document.getElementById('refineBtn');
+            const outputArea = document.getElementById('outputArea');
+            const outputBox = document.getElementById('output');
             
             if(!input) return;
 
@@ -190,10 +189,10 @@
                 const data = await response.json();
                 
                 if (data.refinedEmail) {
-                    document.getElementById('output').innerText = data.refinedEmail;
-                    document.getElementById('outputArea').classList.remove('hidden');
+                    outputBox.innerText = data.refinedEmail;
+                    outputArea.classList.remove('hidden');
                 } else {
-                    alert("Error: " + (data.error || "Could not get a response. Please check your API Key."));
+                    alert("Error: " + (data.error || "Could not get a response."));
                 }
                 
             } catch (error) {
@@ -204,7 +203,7 @@
             }
         }
 
-        // 100% Working Front-end Groq API Call for Language Translator
+        // Language Translator Secure Backend Call (یہ آپ کے کلاؤڈ فلیر ورکر کو ہٹ کرے گا، کوئی کی فرنٹ اینڈ پر ایکسپوز نہیں ہو گی)
         async function translateText() {
             const inputField = document.getElementById('translateInput');
             const input = inputField.value.trim();
@@ -215,47 +214,32 @@
 
             if (!input) return;
 
-            if (GROQ_API_KEY === "YOUR_GROQ_API_KEY_HERE" || !GROQ_API_KEY) {
-                alert("Please add your real Groq API Key inside the script tag first!");
-                return;
-            }
-
             btn.innerText = "Translating...";
             btn.disabled = true;
             outputBox.innerText = "";
 
             try {
-                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                const response = await fetch("/api/translate", {
                     method: "POST",
                     headers: {
-                        "Authorization": `Bearer ${GROQ_API_KEY}`,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        model: "llama3-8b-8192", // آپ اپنی مرضی کا کوئی بھی Groq ماڈل یہاں لکھ سکتے ہیں
-                        messages: [
-                            {
-                                role: "system",
-                                content: `You are a professional language translator. Translate the given text from ${sourceLang} to ${targetLang}. Provide only the direct and pure translation output. Do not include any introductory text, notes, greetings, or extra explanations.`
-                            },
-                            {
-                                role: "user",
-                                content: input
-                            }
-                        ],
-                        temperature: 0.3
+                        prompt: input,
+                        sourceLang: sourceLang,
+                        targetLang: targetLang
                     })
                 });
 
                 const data = await response.json();
 
-                if (data.choices && data.choices[0].message.content) {
-                    outputBox.innerText = data.choices[0].message.content.trim();
+                if (data.translatedText) {
+                    outputBox.innerText = data.translatedText;
                 } else {
-                    alert("API Error: Unable to translate. Please double check your API Key.");
+                    alert("Error: " + (data.error || "Could not get a translation. Please ensure /api/translate is configured in Cloudflare."));
                 }
             } catch (error) {
-                alert("Network error or invalid API request. Please try again.");
+                alert("Connection error. Please try again.");
                 console.error(error);
             } finally {
                 btn.innerText = "Translate Now";
