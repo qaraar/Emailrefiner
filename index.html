@@ -3,16 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <link rel="icon" type="image/png" href="ms-icon-150x150.png">
-    <link class="rounded-lg" rel="apple-touch-icon" href="ms-icon-150x150.png">
-    
+    <link rel="apple-touch-icon" href="ms-icon-150x150.png">
     <link rel="manifest" href="manifest.json">
-    
     <title>Email Refiner — Master Your Professional Email Communication</title>
-    <meta name="description" content="Struggling with email drafting? Use Email Refiner to instantly polish your tone, fix clarity, and master your professional email communication with AI-powered precision.">
-    <meta name="keywords" content="Email Refiner, AI Email Assistant, Professional Email Writing, Business Communication, Polish Email Tone">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <style> 
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;700;800&display=swap');
@@ -21,113 +15,76 @@
         .emerald-btn { background-color: #059669; color: white; }
         .emerald-btn:hover { background-color: #047857; }
         .active-btn { background-color: #065f46 !important; color: white !important; }
-        #toast { visibility: hidden; min-width: 200px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 9999; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 14px; }
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-        .star { cursor: pointer; color: #cbd5e1; transition: all 0.2s ease-in-out; font-size: 28px; }
-        .star:hover { transform: scale(1.2); }
-        .star.filled { color: #f59e0b; text-shadow: 0 0 8px rgba(245, 158, 11, 0.5); }
+        #toast { visibility: hidden; min-width: 200px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 9999; bottom: 30px; left: 50%; transform: translateX(-50%); }
         .hidden-section { display: none; }
-        
-        .lang-modal { display: none; position: absolute; z-index: 100; background: white; border: 1px solid #e2e8f0; border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); width: 280px; }
-        .lang-list-container { max-height: 200px; overflow-y: auto; scroll-behavior: smooth; }
+        .star { cursor: pointer; color: #cbd5e1; font-size: 28px; }
+        .star.filled { color: #f59e0b; }
     </style>
-
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration Failed', err));
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Failed', err));
             });
         }
     </script>
 </head>
-<body class="py-2 px-3 md:py-4 md:px-4 md:pb-16">
+<body class="py-2 px-3 md:py-4 md:px-4">
 
     <div id="toast">Copied to clipboard!</div>
 
-    <div class="max-w-7xl mx-auto mb-3 flex flex-wrap justify-center gap-2 md:gap-6 bg-white border border-slate-200 py-2 px-4 rounded-2xl shadow-sm text-xs md:text-sm font-bold text-slate-600">
-        <button onclick="showSection('emailSection')" class="nav-btn text-emerald-700 hover:text-emerald-700 transition-all">Home</button>
-        <button onclick="showSection('aboutSection')" class="nav-btn hover:text-emerald-700 transition-all">About Us</button>
-        <button onclick="showSection('contactSection')" class="nav-btn hover:text-emerald-700 transition-all">Contact Us</button>
-        <button onclick="showSection('privacySection')" class="nav-btn hover:text-emerald-700 transition-all">Privacy Policy</button>
-        <button onclick="showSection('disclaimerSection')" class="nav-btn hover:text-emerald-700 transition-all">Disclaimer</button>
+    <div class="max-w-7xl mx-auto mb-3 flex flex-wrap justify-center gap-2 bg-white border border-slate-200 py-2 px-4 rounded-2xl shadow-sm text-xs md:text-sm font-bold text-slate-600">
+        <button onclick="showSection('emailSection')" class="nav-btn text-emerald-700">Home</button>
+        <button onclick="showSection('aboutSection')" class="nav-btn">About Us</button>
+        <button onclick="showSection('contactSection')" class="nav-btn">Contact Us</button>
+        <button onclick="showSection('privacySection')" class="nav-btn">Privacy Policy</button>
+        <button onclick="showSection('disclaimerSection')" class="nav-btn">Disclaimer</button>
     </div>
 
-    <div class="max-w-7xl mx-auto premium-card p-4 md:p-6 rounded-[2rem] relative">
-        <div class="flex justify-between items-center mb-4 border-b pb-3 border-slate-100 flex-wrap gap-3">
-            <div class="flex items-center gap-2">
-                <a href="#" onclick="showSection('emailSection'); return false;" class="flex items-center gap-2 hover:opacity-80 transition-all">
-                    <img src="ms-icon-150x150.png" alt="Email Refiner Logo" class="w-8 h-8 md:w-9 md:h-9 rounded-xl shadow-md border border-slate-200">
-                    <span class="text-xs md:text-sm font-black tracking-tight text-emerald-950 uppercase hidden sm:inline-block">Email Refiner</span>
-                </a>
-            </div>
-            <button id="backToHomeBtn" onclick="showSection('emailSection')" class="hidden py-1.5 px-3 md:py-2 md:px-4 bg-slate-100 text-slate-700 font-semibold rounded-xl hover:bg-slate-200 transition-all text-xs md:text-sm">← Back to Dashboard</button>
-            <div class="flex items-center gap-2">
-                <button id="pwaInstallBtn" onclick="triggerPwaInstall()" class="py-1.5 px-3 md:py-2 md:px-4 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all text-xs md:text-sm border border-emerald-200 flex items-center gap-1.5">
-                    <span>Install App</span>
-                </button>
-                <button id="goTranslatorBtn" onclick="showSection('translatorSection')" class="py-1.5 px-3 md:py-2 md:px-4 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all text-xs md:text-sm border border-emerald-200">Language Translator →</button>
-            </div>
-        </div>
-
+    <div class="max-w-7xl mx-auto premium-card p-4 md:p-6 rounded-[2rem]">
+        
         <div id="emailSection" class="content-section">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-start">
-                <div>
-                    <div class="text-left mb-3">
-                        <h1 class="text-3xl md:text-4xl font-extrabold text-emerald-950 tracking-tighter">Email Refiner</h1>
-                        <p class="text-emerald-700 mt-0.5 font-medium italic text-xs md:text-sm">Master Your Professional Email Communication</p>
-                    </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-2 mb-3">
-                        <button onclick="setTone(this, 'Professional')" class="tone-btn active-btn p-2.5 rounded-xl border border-emerald-200 text-xs md:text-sm font-semibold transition-all">Professional</button>
-                        <button onclick="setTone(this, 'Friendly')" class="tone-btn p-2.5 rounded-xl border border-emerald-200 text-xs md:text-sm font-semibold hover:border-emerald-600 transition-all">Friendly</button>
-                        <button onclick="setTone(this, 'Formal')" class="tone-btn p-2.5 rounded-xl border border-emerald-200 text-xs md:text-sm font-semibold hover:border-emerald-600 transition-all">Formal</button>
-                        <button onclick="setTone(this, 'Concise')" class="tone-btn p-2.5 rounded-xl border border-emerald-200 text-xs md:text-sm font-semibold hover:border-emerald-600 transition-all">Concise</button>
-                    </div>
-                    <textarea id="input" class="w-full p-4 border-2 border-emerald-100 rounded-2xl mb-3 outline-none focus:ring-2 focus:ring-emerald-500 min-h-[150px] lg:min-h-[200px] text-sm md:text-base shadow-inner" placeholder="Paste your draft email here..."></textarea>
-                    <button id="refineBtn" onclick="refine()" class="w-full emerald-btn py-3.5 md:py-4 rounded-2xl font-bold text-base md:text-lg shadow-lg shadow-emerald-200 transition-all mb-2">Refine My Email</button>
-                </div>
-                <div class="space-y-4">
-                    <div id="ratingSection" class="w-full bg-amber-50/70 p-4 rounded-2xl border-2 border-amber-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
-                        <div class="flex flex-col items-start gap-1">
-                            <div class="flex items-center gap-2">
-                                <span class="flex h-2.5 w-2.5 rounded-full bg-amber-500 animate-pulse"></span>
-                                <span class="text-xs font-black text-amber-950 tracking-wider uppercase">User Satisfaction Matrix</span>
-                            </div>
-                            <span id="averageRatingText" class="text-xs font-bold text-amber-800 italic mt-0.5">⭐ Loading metrics...</span>
-                        </div>
-                        <div id="star-container" class="flex gap-1">
-                            <span class="star" onclick="rate(1)">★</span>
-                            <span class="star" onclick="rate(2)">★</span>
-                            <span class="star" onclick="rate(3)">★</span>
-                            <span class="star" onclick="rate(4)">★</span>
-                            <span class="star" onclick="rate(5)">★</span>
-                        </div>
-                    </div>
-                    <div id="outputArea" class="hidden border border-emerald-200 bg-white rounded-2xl p-4 shadow-md">
-                        <label class="block text-xs font-black text-emerald-950 tracking-wider uppercase mb-2">Refinement Suite Results</label>
-                        <div id="output" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-xl text-slate-700 text-sm md:text-base leading-relaxed whitespace-pre-wrap min-h-[140px] lg:min-h-[180px]"></div>
-                        <button onclick="copy('output')" class="mt-3 w-full py-2.5 bg-emerald-50 text-emerald-700 font-bold rounded-xl hover:bg-emerald-100 transition-all text-sm border border-emerald-100">Copy to Clipboard</button>
-                    </div>
-                </div>
+            <h1 class="text-3xl font-extrabold text-emerald-950">Email Refiner</h1>
+            <div class="grid grid-cols-4 gap-2 my-4">
+                <button onclick="setTone(this, 'Professional')" class="tone-btn active-btn p-2 rounded-xl border">Professional</button>
+                <button onclick="setTone(this, 'Friendly')" class="tone-btn p-2 rounded-xl border">Friendly</button>
+                <button onclick="setTone(this, 'Formal')" class="tone-btn p-2 rounded-xl border">Formal</button>
+                <button onclick="setTone(this, 'Concise')" class="tone-btn p-2 rounded-xl border">Concise</button>
+            </div>
+            <textarea id="input" class="w-full p-4 border-2 rounded-2xl min-h-[200px]" placeholder="Paste your email..."></textarea>
+            <button id="refineBtn" onclick="refine()" class="w-full emerald-btn py-4 rounded-2xl font-bold mt-4">Refine My Email</button>
+            
+            <div id="outputArea" class="hidden border rounded-2xl p-4 mt-6 bg-slate-50">
+                <div id="output" class="whitespace-pre-wrap"></div>
+                <button onclick="copy('output')" class="mt-4 w-full py-2 bg-emerald-100 rounded-xl">Copy</button>
             </div>
         </div>
 
-        <div id="translatorSection" class="content-section hidden-section">
-             <!-- باقی کوڈ وہی رہے گا -->
-        </div>
+        <div id="aboutSection" class="content-section hidden-section"><h2>About Us</h2></div>
+        <div id="contactSection" class="content-section hidden-section"><h2>Contact Us</h2></div>
+        <div id="privacySection" class="content-section hidden-section"><h2>Privacy Policy</h2></div>
+        <div id="disclaimerSection" class="content-section hidden-section"><h2>Disclaimer</h2></div>
     </div>
 
     <script>
+        let currentTone = 'Professional';
+
+        function showSection(id) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden-section'));
+            document.getElementById(id).classList.remove('hidden-section');
+        }
+
+        function setTone(btn, tone) {
+            currentTone = tone;
+            document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active-btn'));
+            btn.classList.add('active-btn');
+        }
+
         async function refine() {
             const inputField = document.getElementById('input');
-            const input = inputField.value.trim();
             const btn = document.getElementById('refineBtn');
+            const outputArea = document.getElementById('outputArea');
             
-            if (!input) {
-                alert("Please enter some text to refine.");
-                return;
-            }
+            if (!inputField.value.trim()) { alert("Please enter text."); return; }
 
             btn.innerText = "Processing...";
             btn.disabled = true;
@@ -136,72 +93,31 @@
                 const response = await fetch("/api/refine", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ prompt: input, tone: currentTone })
+                    body: JSON.stringify({ prompt: inputField.value, tone: currentTone })
                 });
 
+                const data = await response.json();
+
                 if (!response.ok) {
-                    if (response.status === 401 || response.status === 403) throw new Error("AUTH_ERROR");
-                    if (response.status === 429) throw new Error("LIMIT_ERROR");
-                    if (response.status >= 500) throw new Error("SERVER_ERROR");
-                    throw new Error("UNKNOWN_ERROR");
+                    throw new Error(data.error || "Server error: " + response.status);
                 }
 
-                const data = await response.json();
-                
-                if (data && data.refinedEmail) {
-                    document.getElementById('output').innerText = data.refinedEmail;
-                    document.getElementById('outputArea').classList.remove('hidden');
-                    document.getElementById('outputArea').scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    throw new Error("EMPTY_DATA");
-                }
+                document.getElementById('output').innerText = data.refinedEmail;
+                outputArea.classList.remove('hidden');
             } catch (error) {
-                if (error.message === "AUTH_ERROR") alert("Error: API Authentication failed (401/403).");
-                else if (error.message === "LIMIT_ERROR") alert("Error: Rate limit exceeded. Please wait.");
-                else if (error.message === "SERVER_ERROR") alert("Error: Server error (500). Please try later.");
-                else if (error.message === "EMPTY_DATA") alert("Error: Received empty data from server.");
-                else alert("Connection Error: Please check your internet connection.");
+                alert("CRITICAL ERROR: " + error.message);
             } finally {
                 btn.innerText = "Refine My Email";
                 btn.disabled = false;
             }
         }
-
-        async function executeTranslationLive() {
-            const rawText = document.getElementById('transInput').value.trim();
-            const btn = document.getElementById('translateBtn');
-            if(!rawText) return;
-            
-            btn.innerText = "Translating...";
-            btn.disabled = true;
-
-            try {
-                const response = await fetch("/api/refine", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        prompt: `Translate from ${srcLangName} to ${tgtLangName}: ${rawText}`,
-                        tone: "Professional"
-                    })
-                });
-
-                if (!response.ok) throw new Error("REQ_FAILED");
-
-                const data = await response.json();
-                if (data.refinedEmail) {
-                    document.getElementById('transOutput').innerText = data.refinedEmail;
-                    document.getElementById('transOutputArea').classList.remove('hidden');
-                } else {
-                    throw new Error("EMPTY_DATA");
-                }
-            } catch (error) {
-                alert("Translation Error: Unable to complete the request. Please check your network.");
-            } finally {
-                btn.innerText = "Translate Text Now";
-                btn.disabled = false;
-            }
+        
+        function copy(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text);
+            document.getElementById('toast').classList.add('show');
+            setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000);
         }
-        // باقی سب فنکشنز (showSection, setTone, copy وغیرہ) پہلے کی طرح محفوظ ہیں۔
-    </script> 
+    </script>
 </body>
 </html>
